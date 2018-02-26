@@ -74,8 +74,8 @@ class MoveClassifier(object):
             if len_set_move == 1:
                 return TYPE_4_BOMB
             elif len_set_move == 2:
-                if (move[0] == move[1] and move[1] == move[2]) or\
-                   (move[1] == move[2] and move[2] == move[3]):
+                if move[0] == move[1] == move[2] or\
+                   move[1] == move[2] == move[3]:
                     return TYPE_6_3_1
                 else: 
                     return TYPE_99_WRONG
