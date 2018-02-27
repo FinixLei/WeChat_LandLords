@@ -23,34 +23,60 @@ class MovesGener(object):
         self.triple_cards_moves = list()
         self.bomb_moves = list()
         self.final_bomb_moves = list()
-        
-    def _gen_serial_moves(self, cards, min_serial, repeat=1):
+
+    '''
+    cards: A list of single cards, each one may represent several same cards.
+    min_serial: The required minimum sequence, e.g. for pairs, it's 3.
+    repeat: 1 means single, 2 means pair, 3 means triple cards.
+    repeat_num: How many sections in the sequence, e.g. for 3,3,3,4,4,4, it is 2.
+                The default value 0 means no limitation 
+    '''
+    def _gen_serial_moves(self, cards, min_serial, repeat=1, repeat_num=0):
+        if repeat_num < min_serial:  # at least repeat_num is min_serial
+            repeat_num = 0
+
         single_cards = sorted(list(set(cards)))
-        longest_lists = list()
-        
+        seq_records = list()
+        moves = list()
+
         start = i = 0
-        count = 1
+        longest = 1
         while i < len(single_cards):
             if i+1 < len(single_cards) and single_cards[i+1] - single_cards[i] == 1:
-                count += 1
+                longest += 1
                 i += 1
             else:
-                if count >= min_serial:
-                    long_list = single_cards[start: start+count]
-                    step = min_serial
-                    while step <= count:
-                        index = 0
-                        while index + step <= len(long_list):
-                            target_moves = sorted(long_list[index: index+step] * repeat)
-                            longest_lists.append(target_moves)
-                            index += 1
-                        step += 1
-                    
+                seq_records.append((start, longest))
                 i += 1
                 start = i
-                count = 1
-            
-        return longest_lists
+                longest = 1
+
+        for seq in seq_records:
+            if seq[1] < min_serial:
+                continue
+            start, longest = seq[0], seq[1]
+            longest_list = single_cards[start: start+longest]
+
+            if repeat_num == 0:  # No limitation on how many sequences
+                steps = min_serial
+                while steps <= longest:
+                    index = 0
+                    while steps + index <= longest:
+                        target_moves = sorted(longest_list[index: index+steps] * repeat)
+                        moves.append(target_moves)
+                        index += 1
+                    steps += 1
+
+            else:  # repeat_num > 0
+                if longest < repeat_num:
+                    continue
+                index = 0
+                while index + repeat_num <= longest:
+                    target_moves = sorted(longest_list[index: index+repeat_num] * repeat)
+                    moves.append(target_moves)
+                    index += 1
+
+        return moves
 
     def gen_type_1_single(self):
         if self.single_card_moves:
@@ -65,7 +91,7 @@ class MovesGener(object):
         if self.pair_moves:
             return self.pair_moves
         
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 2:
                 self.pair_moves.append([k, k])
         return self.pair_moves
@@ -74,7 +100,7 @@ class MovesGener(object):
         if self.triple_cards_moves:
             return self.triple_cards_moves
         
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 3:
                 self.triple_cards_moves.append([k, k, k])
         return self.triple_cards_moves
@@ -83,7 +109,7 @@ class MovesGener(object):
         if self.bomb_moves:
             return self.bomb_moves
         
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 4:
                 self.bomb_moves.append([k, k, k, k])
         return self.bomb_moves
@@ -97,7 +123,7 @@ class MovesGener(object):
         
     def gen_type_6_3_1(self):
         triple_cards = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 3:
                 triple_cards.append(k)
                 
@@ -112,7 +138,7 @@ class MovesGener(object):
     def gen_type_7_3_2(self):
         triple_cards = list()
         two_more_cards = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 3:
                 triple_cards.append(k)
             if v >= 2:
@@ -125,31 +151,37 @@ class MovesGener(object):
                     result.append([t, t, t, i, i])
         return result
         
-    def gen_type_8_serial_single(self):
-        return self._gen_serial_moves(self.cards_list, MovesGener.MIN_SINGLE_CARDS, repeat=1)
+    def gen_type_8_serial_single(self, repeat_num=0):
+        return self._gen_serial_moves(self.cards_list,
+                                      MovesGener.MIN_SINGLE_CARDS,
+                                      repeat=1,
+                                      repeat_num=repeat_num)
         
-    def gen_type_9_serial_pair(self):
+    def gen_type_9_serial_pair(self, repeat_num=0):
         single_pairs = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 2:
                 single_pairs.append(k)
                 
-        return self._gen_serial_moves(single_pairs, MovesGener.MIN_PAIRS, repeat=2)
+        return self._gen_serial_moves(single_pairs,
+                                      MovesGener.MIN_PAIRS,
+                                      repeat=2,
+                                      repeat_num=repeat_num)
         
-    def gen_type_10_serial_triple(self):
+    def gen_type_10_serial_triple(self, repeat_num=0):
         single_triples = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 3:
                 single_triples.append(k)
                 
-        return self._gen_serial_moves(single_triples, MovesGener.MIN_TRIPLES, repeat=3)
-        
-    # TODO: When generating serial moves,
-    # we may need to assign an argument for specifying how many numbers of this "serial"
-    
+        return self._gen_serial_moves(single_triples,
+                                      MovesGener.MIN_TRIPLES,
+                                      repeat=3,
+                                      repeat_num=repeat_num)
+
     def gen_type_13_4_2(self):
         four_cards = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 4:
                 four_cards.append(k)
         
@@ -172,12 +204,12 @@ class MovesGener(object):
     
     def gen_type_14_4_4(self):
         four_cards = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v >= 4:
                 four_cards.append(k)
         
         two_more_cards = list()
-        for k,v in self.cards.items():
+        for k, v in self.cards.items():
             if v in [2, 3]:
                 two_more_cards.append(k)
         

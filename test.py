@@ -15,6 +15,10 @@ def main():
     # print(moves)
     print(len(moves))
 
+    print(mg.gen_type_8_serial_single(repeat_num=7))
+    print(mg.gen_type_9_serial_pair(repeat_num=5))
+    print(mg.gen_type_10_serial_triple(repeat_num=2))
+
     # Test MoveClassifier 
     moves = [
         [], 
