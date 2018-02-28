@@ -1,3 +1,4 @@
+import copy
 import time
 from functools import wraps
 
@@ -35,3 +36,53 @@ def calc_time(fn):
         print("Time cost of %s: %s" % (fn.__name__, end - begin))
         return result
     return wrapper
+
+
+class GenAnyN(object):
+    """
+    Get any N cards from a card list
+    Usage:
+        gan = GenAnyN(a_card_list, n)
+        n_cards_lists = gan.gen_n_cards_lists()
+    """
+    def __init__(self, array, count):
+        self.array = array
+        self.count = count
+        self.all_listed = list()
+        self.final_result = list()
+
+    def _get_any_n(self, array, count, result=list()):
+        if count == 0:
+            tmp_result = copy.deepcopy(result)
+            self.all_listed.append(tmp_result)
+            return
+
+        for i in array:
+            new_array = copy.deepcopy(array)
+            new_array.remove(i)
+            result.append(i)
+            self._get_any_n(new_array, count - 1, result)
+            result.remove(i)
+
+    def gen_n_cards_lists(self):
+        array = copy.deepcopy(self.array)
+        count = self.count
+        self._get_any_n(array, count)
+
+        tmp_result = [sorted(item) for item in self.all_listed]
+        duplicated = list()
+        i = 0
+        while i < len(tmp_result) - 1:
+            j = i + 1
+            while j < len(tmp_result):
+                if tmp_result[i] == tmp_result[j]:
+                    duplicated.append(j)
+                j += 1
+            i += 1
+
+        self.final_result = list()
+        for i in range(len(tmp_result)):
+            if i not in duplicated:
+                self.final_result.append(tmp_result[i])
+
+        return self.final_result

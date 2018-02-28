@@ -1,5 +1,5 @@
 import copy
-from common import calc_time
+from common import calc_time, GenAnyN
 
 
 class MovesGener(object):
@@ -179,6 +179,25 @@ class MovesGener(object):
                                       repeat=3,
                                       repeat_num=repeat_num)
 
+    def gen_type_11_serial_3_1(self, repeat_num=0):
+        serial_3_moves = self.gen_type_10_serial_triple(repeat_num=repeat_num)
+        serial_3_1_moves = list()
+
+        for s3 in serial_3_moves:  # s3 is like [3,3,3,4,4,4]
+            cards = copy.deepcopy(self.cards_list)
+            s3_set = set(s3)
+            new_cards = [i for i in cards if i not in s3_set]
+
+            # Get any s3_len items from cards
+            gan = GenAnyN(new_cards, len(s3_set))
+            any_n_lists = gan.gen_n_cards_lists()
+
+            for i in any_n_lists:
+                move = s3 + i  # like [3,3,3,4,4,4] + [5,6]
+                serial_3_1_moves.append(move)
+
+        return serial_3_1_moves
+
     def gen_type_13_4_2(self):
         four_cards = list()
         for k, v in self.cards.items():
@@ -249,8 +268,8 @@ class MovesGener(object):
         moves.extend(self.gen_type_8_serial_single())
         moves.extend(self.gen_type_9_serial_pair())
         moves.extend(self.gen_type_10_serial_triple())
-        
-        # moves.extend(self.gen_type_11_serial_3_1()) 
+        moves.extend(self.gen_type_11_serial_3_1())
+
         # moves.extend(self.gen_type_12_serial_3_2()) 
         
         moves.extend(self.gen_type_13_4_2())
