@@ -1,3 +1,6 @@
+from common import MIN_SINGLE_CARDS, MIN_PAIRS, MIN_TRIPLES
+
+
 TYPE_0_PASS = 0
 TYPE_1_SINGLE = 1
 TYPE_2_PAIR = 2
@@ -37,6 +40,22 @@ MOVE_TYPES_STR = {
 }
 
 
+def is_increased_seq_by_one(move):
+    """
+        move is a sorted list
+    """
+    result = True
+
+    i = 0
+    while i < len(move)-1:
+        j = i + 1
+        if move[j] - move[i] != 1:
+            result = False
+            break
+        i += 1
+    return result
+
+
 class MoveClassifier(object):
 
     def get_move_type(self, move):
@@ -59,7 +78,7 @@ class MoveClassifier(object):
         if len_move == 2:
             if move[0] == move[1]:
                 return TYPE_2_PAIR
-            elif 20 in move and 30 in move:  # Kings
+            elif move == [20, 30]:  # Kings
                 return TYPE_5_KING_BOMB
             else:
                 return TYPE_99_WRONG
@@ -95,13 +114,85 @@ class MoveClassifier(object):
                     return TYPE_8_SERIAL_SINGLE
                 else:
                     return TYPE_99_WRONG
-            
+
+        # Simple classifying is done. Let's do harder work.
+
         cards = dict()
         for i in move:
             if i in cards:
                 cards[i] += 1
             else:
                 cards[i] = 1
-        
-        # TO DO: check TYPE 8-14
-        return 0
+
+        card_types = len(cards.keys())
+        count_dict = dict()
+        for _, v in cards.items():
+            if v in count_dict:
+                count_dict[v] += 1
+            else:
+                count_dict[v] = 1
+
+        if len(move) == 6:
+            if card_types == 3 and \
+               count_dict.get(4) == 1 and \
+               count_dict.get(1) == 2:
+                return TYPE_13_4_2
+
+            elif card_types == 3 and count_dict.get(2) == 3:
+                return TYPE_9_SERIAL_PAIR, 3  # 3 serial pairs
+
+            elif card_types == 6 and count_dict.get(1) == 6:
+                if is_increased_seq_by_one(move):
+                    return TYPE_8_SERIAL_SINGLE, 6
+                else:
+                    return TYPE_99_WRONG
+
+            else:
+                return TYPE_99_WRONG
+
+        if len(move) == 8 and \
+           card_types == 3 and \
+           count_dict.get(4) == 1 and \
+           count_dict.get(2) == 2:
+            return TYPE_14_4_4
+
+        if card_types == count_dict.get(1) and \
+           card_types >= MIN_SINGLE_CARDS and \
+           is_increased_seq_by_one(move):
+            return TYPE_8_SERIAL_SINGLE
+
+        if card_types == count_dict.get(2) and \
+           card_types >= MIN_PAIRS and \
+           is_increased_seq_by_one(sorted(list(set(move)))):
+            return TYPE_9_SERIAL_PAIR
+
+        if card_types == count_dict.get(3) and \
+           card_types >= MIN_TRIPLES and \
+           is_increased_seq_by_one(sorted(list(set(move)))):
+            return TYPE_10_SERIAL_TRIPLE
+
+        # Check Type 11 and Type 12
+        if count_dict.get(3) >= MIN_TRIPLES:
+            serial_3 = list()
+            single = list()
+            pair = list()
+
+            for k, v in cards.items():
+                if v == 3:
+                    serial_3.append(k)
+                elif v == 1:
+                    single.append(k)
+                elif v == 2:
+                    pair.append(k)
+                else:  # no other possibilities
+                    return TYPE_99_WRONG
+
+            if is_increased_seq_by_one(sorted(serial_3)):
+                if len(serial_3) == len(single) and card_types == len(serial_3)*2:
+                    return TYPE_11_SERIAL_3_1
+                if len(serial_3) == len(pair) and card_types == len(serial_3)*2:
+                    return TYPE_12_SERIAL_3_2
+
+            return TYPE_99_WRONG
+
+        return TYPE_99_WRONG

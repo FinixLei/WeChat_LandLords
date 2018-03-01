@@ -1,12 +1,9 @@
 import copy
-from common import calc_time, GenAnyN
+from common import calc_time, GenAnyN, \
+    MIN_SINGLE_CARDS, MIN_PAIRS, MIN_TRIPLES
 
 
 class MovesGener(object):
-
-    MIN_SINGLE_CARDS = 5
-    MIN_PAIRS = 3
-    MIN_TRIPLES = 2
 
     def __init__(self, cards_list=list()):
         self.cards_list = cards_list
@@ -153,7 +150,7 @@ class MovesGener(object):
         
     def gen_type_8_serial_single(self, repeat_num=0):
         return self._gen_serial_moves(self.cards_list,
-                                      MovesGener.MIN_SINGLE_CARDS,
+                                      MIN_SINGLE_CARDS,
                                       repeat=1,
                                       repeat_num=repeat_num)
         
@@ -164,7 +161,7 @@ class MovesGener(object):
                 single_pairs.append(k)
                 
         return self._gen_serial_moves(single_pairs,
-                                      MovesGener.MIN_PAIRS,
+                                      MIN_PAIRS,
                                       repeat=2,
                                       repeat_num=repeat_num)
         
@@ -175,7 +172,7 @@ class MovesGener(object):
                 single_triples.append(k)
                 
         return self._gen_serial_moves(single_triples,
-                                      MovesGener.MIN_TRIPLES,
+                                      MIN_TRIPLES,
                                       repeat=3,
                                       repeat_num=repeat_num)
 
@@ -212,7 +209,7 @@ class MovesGener(object):
             gan = GenAnyN(pair_candidates, len(s3_set))
             any_n_lists = gan.gen_n_cards_lists()
             for i in any_n_lists:
-                move = s3 + i*2  # like [3,3,3, 4,4,4] + [7,8]*2
+                move = sorted(s3 + i*2)  # like [3,3,3, 4,4,4] + [7,8]*2
                 serial_3_2_moves.append(move)
 
         return serial_3_2_moves

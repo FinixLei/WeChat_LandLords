@@ -19,24 +19,43 @@ def main():
     # print(mg.gen_type_9_serial_pair(repeat_num=5))
     # print(mg.gen_type_10_serial_triple(repeat_num=2))
     # print(mg.gen_type_11_serial_3_1())
-    print(mg.gen_type_12_serial_3_2())
+    # print(mg.gen_type_12_serial_3_2())
+
+    # Test GenAnyN
+    print("\n--- Test GenAnyN ---")
+    gan = GenAnyN([1, 2, 3, 4, 5], 3)  # from this list, get any 3 numbers
+    result = gan.gen_n_cards_lists()
+    for cards in result:
+        print(cards)
+    print(len(result))
 
     print("\n--- Test Move Classifier ---")
     moves = [
-        [], 
+        [],
         [20],
         [3, 3],
         [20, 30],
         [4, 4, 4],
-        [5, 5, 5, 2], 
-        [2, 2, 2, 5],
-        [2, 3, 4, 5],
-        [6, 6, 6, 6], 
-        [7, 7, 7, 8, 8], 
-        [9, 9, 10, 10, 10], 
-        [3, 4, 5, 6, 7], 
-        [3, 4, 5, 6, 8], 
-        [2, 2, 4, 5, 6]
+        [5, 5, 5, 2],
+        [3, 3, 3, 5],
+        [6, 3, 4, 5],
+        [6, 6, 6, 6],
+        [7, 7, 7, 8, 8],
+        [9, 9, 10, 10, 10],
+        [3, 4, 5, 6, 7],
+        [3, 4, 5, 6, 8],
+        [2, 2, 4, 5, 6],
+        [3, 4, 5, 6, 7, 8, 9],
+        [3, 3, 3, 3, 5, 6],
+        [3, 3, 3, 3, 5, 6, 7],
+        [4, 4, 4, 4, 5, 5, 7, 7],
+        [4, 4, 4, 4, 5, 5, 7, 6],
+        [4, 4, 4, 4, 5, 5, 6, 6, 7, 7],
+        [5, 5, 5, 6, 6, 6, 7, 8],
+        [5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 9, 10],
+        [5, 5, 5, 6, 6, 6, 7, 7, 9, 9],
+        [5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 10, 10, 13, 13],
+        [5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 10, 10, 13, 13, 14],
     ]
     
     mc = move_classifier.MoveClassifier()
@@ -49,13 +68,7 @@ def main():
                move,
                move_classifier.MOVE_TYPES_STR.get(move_type, "Wrong")))
 
-    # Test GenAnyN
-    print("\n--- Test GenAnyN ---")
-    gan = GenAnyN([1, 2, 3, 4, 5], 3)  # from this list, get any 3 numbers
-    result = gan.gen_n_cards_lists()
-    for cards in result:
-        print(cards)
-    print(len(result))
+
 
     # Test Framework
     
