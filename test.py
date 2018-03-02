@@ -62,13 +62,11 @@ def main():
     count = 0
     for move in moves:
         count += 1
-        move_type = mc.get_move_type(move)
+        move_type = mc.get_move_type(move).get('type')
         print("%d: The type of %s is %s" %
               (count,
                move,
                move_classifier.MOVE_TYPES_STR.get(move_type, "Wrong")))
-
-
 
     # Test Framework
     
