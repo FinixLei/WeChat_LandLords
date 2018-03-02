@@ -45,7 +45,6 @@ def is_increased_seq_by_one(move):
         move is a sorted list
     """
     result = True
-
     i = 0
     while i < len(move)-1:
         j = i + 1
@@ -111,10 +110,7 @@ class MoveClassifier(object):
             elif len_set_move == 2:
                 return {'type': TYPE_7_3_2}
             else:  # len_set_move == 5
-                if move[0] + 1 == move[1] and \
-                   move[1] + 1 == move[2] and \
-                   move[2] + 1 == move[3] and \
-                   move[3] + 1 == move[4]:
+                if is_increased_seq_by_one(move):
                     return {'type': TYPE_8_SERIAL_SINGLE, 'serial_num': 5}
                 else:
                     return {'type': TYPE_99_WRONG}
@@ -174,7 +170,7 @@ class MoveClassifier(object):
            is_increased_seq_by_one(sorted(list(set(move)))):
             return {'type': TYPE_10_SERIAL_TRIPLE, 'serial_num': card_types}
 
-        # Check Type_11_SERIAL_3_1 and Type_12_SERIAL_3_2
+        # Check Type 11 (serial 3+1) and Type 12 (serial 3+2)
         if count_dict.get(3) >= MIN_TRIPLES:
             serial_3 = list()
             single = list()
@@ -195,7 +191,5 @@ class MoveClassifier(object):
                     return {'type': TYPE_11_SERIAL_3_1, 'serial_num': len(serial_3)}
                 if len(serial_3) == len(pair) and card_types == len(serial_3)*2:
                     return {'type': TYPE_12_SERIAL_3_2, 'serial_num': len(serial_3)}
-
-            return {'type': TYPE_99_WRONG}
 
         return {'type': TYPE_99_WRONG}
