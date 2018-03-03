@@ -49,3 +49,47 @@ S1 + m1 = S21; S1+m2 = S22; ... S1 + mn = S2n
 Sknx = [a is empty or b is empty] => a win or b win
 
 可能是找出胜率最高的move
+
+-----------------------------------------------------------------------------
+
+界面设计：
+
+LandLorder:
+    4, 6, 6, 7, 8, 8, 9, K, A, 2, 2
+    
+You:
+    3, 3, 4, 5, 7, 8, A, A, 2, Y, Z
+    
+It's your turn now! 
+Please Input:
+3, 3
+
+--------------------------------------
+
+LandLorder Play: 
+    6, 6 
+    
+LandLorder:
+    4, 7, 8, 8, 9, K, A, 2, 2
+    
+You:
+    4, 5, 7, 8, A, A, 2, Y, Z
+    
+It's your turn now!
+Please Input:
+Pass
+
+---------------------------------------
+
+LandLorder Play: 
+    4
+    
+LandLorder:
+    7, 8, 8, 9, K, A, 2, 2
+    
+You:
+    4, 5, 7, 8, A, A, 2, Y, Z
+    
+It's your turn now!
+Please Input:
+
