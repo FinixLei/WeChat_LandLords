@@ -134,6 +134,7 @@ class UIEngine(object):
                             self.check_quit_command(input_move)
                             if self.pass_move(input_move):
                                 current_move = []
+                                break
                             else:
                                 current_move = self.format_cards(input_move.split())
                                 if self.valid_move(current_move, current_cards):
