@@ -1,6 +1,7 @@
 import move_classifier
 from common import s2v, v2s, format_input, GenAnyN, print_func_name
 from move_gener import MovesGener
+from ui_engine import UIEngine
 
 
 a = [3, 3, 3, 4, 4, 4, 6, 7, 8, 9, 10, 10, 'K']
@@ -97,6 +98,12 @@ def test_MoveClassifier():
                move_classifier.MOVE_TYPES_STR.get(move_type, "Wrong")))
 
 
+@print_func_name
+def test_ui_engine():
+    ui_engine = UIEngine()
+    ui_engine.run()
+
+
 def main():
     test_MoveGener()
     test_gen_type_8_serial_single()
@@ -106,6 +113,7 @@ def main():
     test_gen_type_12_serial_3_2()
     test_GenAnyN()
     test_MoveClassifier()
-    
+    test_ui_engine()
+
 
 main()

@@ -103,7 +103,7 @@ class UIEngine(object):
 
         print("农民的牌: ")
         cards = ''
-        for i in lord_cards:
+        for i in farmer_cards:
             cards += v2s[i] + ' '
         print(cards)
 
@@ -116,8 +116,6 @@ class UIEngine(object):
         current_player = 'Farmer'  # 'Farmer' or 'Lord'
 
         while True:  # Playing
-            self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
-
             if current_player == 'Farmer':
                 print('现在轮到农民出牌: ')
                 input_move = raw_input('')
@@ -140,6 +138,7 @@ class UIEngine(object):
                                     break
 
                 farmer_cards = self.get_rest_cards(current_move, farmer_cards)
+                self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
                 if len(farmer_cards) == 0:
                     print("农民胜利!!!")
                     exit(0)
@@ -168,9 +167,9 @@ class UIEngine(object):
                                     break
 
                 lord_cards = self.get_rest_cards(current_move, lord_cards)
+                self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
                 if len(lord_cards) == 0:
                     print("地主胜利!!!")
                     exit(0)
                 else:
                     current_player = 'Farmer'
-
