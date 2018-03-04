@@ -1,4 +1,5 @@
 import copy
+import sys
 import time
 from functools import wraps
 
@@ -39,6 +40,16 @@ def calc_time(fn):
         result = fn(*args, **kw)
         end = time.time()
         print("Time cost of %s: %s" % (fn.__name__, end - begin))
+        return result
+    return wrapper
+
+
+def print_func_name(fn):
+    @wraps(fn)
+    def wrapper(*args, **kw):
+        print("--- %s ---" % fn.__name__)
+        result = fn(*args, **kw)
+        print("-" * 50)
         return result
     return wrapper
 

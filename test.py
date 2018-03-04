@@ -1,35 +1,63 @@
-from common import s2v, v2s, format_input, GenAnyN
-from move_gener import MovesGener
 import move_classifier
+from common import s2v, v2s, format_input, GenAnyN, print_func_name
+from move_gener import MovesGener
 
 
-def main():
-    print("\n--- Test MoveGener ---")
-    a = [3,3,3, 4,4,4, 6,7,8,9,10, 10, 'K']
-    b = [6,7,8,9,10, 'J', 'J', 'Q', 'Q', 'Q', 'Y']
-    c = [3,3,3,3, 4,4,4, 5,5, 6,6, 7,7, 8,8, 9,9, 10, 11, 12, 13, 13, 13, 14, 14, 14, 'Y', 'Z']
+a = [3, 3, 3, 4, 4, 4, 6, 7, 8, 9, 10, 10, 'K']
+b = [6, 7, 8, 9, 10, 'J', 'J', 'Q', 'Q', 'Q', 'Y']
+c = [3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 11, 12, 13, 13, 13, 14, 14, 14, 'Y', 'Z']
 
+
+@print_func_name
+def test_MoveGener():
     print(format_input(c))
     mg = MovesGener(format_input(c))
     moves = mg.gen_moves()
     # print(moves)
     print(len(moves))
 
-    # print(mg.gen_type_8_serial_single(repeat_num=7))
-    # print(mg.gen_type_9_serial_pair(repeat_num=5))
-    # print(mg.gen_type_10_serial_triple(repeat_num=2))
-    # print(mg.gen_type_11_serial_3_1())
-    # print(mg.gen_type_12_serial_3_2())
 
-    # Test GenAnyN
-    print("\n--- Test GenAnyN ---")
+@print_func_name
+def test_gen_type_8_serial_single():
+    mg = MovesGener(format_input(c))
+    print(mg.gen_type_8_serial_single(repeat_num=7))
+
+
+@print_func_name
+def test_gen_type_9_serial_pair():
+    mg = MovesGener(format_input(c))
+    print(mg.gen_type_9_serial_pair(repeat_num=5))
+
+
+@print_func_name
+def test_gen_type_10_serial_triple():
+    mg = MovesGener(format_input(c))
+    print(mg.gen_type_10_serial_triple(repeat_num=2))
+
+
+@print_func_name
+def test_gen_type_11_serial_3_1():
+    mg = MovesGener(format_input(c))
+    print(mg.gen_type_11_serial_3_1())
+
+
+@print_func_name
+def test_gen_type_12_serial_3_2():
+    mg = MovesGener(format_input(c))
+    print(mg.gen_type_12_serial_3_2())
+
+
+@print_func_name
+def test_GenAnyN():
     gan = GenAnyN([1, 2, 3, 4, 5], 3)  # from this list, get any 3 numbers
     result = gan.gen_n_cards_lists()
     for cards in result:
         print(cards)
     print(len(result))
 
-    print("\n--- Test Move Classifier ---")
+
+@print_func_name
+def test_MoveClassifier():
     moves = [
         [],
         [20],
@@ -57,7 +85,7 @@ def main():
         [5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 10, 10, 13, 13],
         [5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 10, 10, 13, 13, 14],
     ]
-    
+
     mc = move_classifier.MoveClassifier()
     count = 0
     for move in moves:
@@ -68,7 +96,16 @@ def main():
                move,
                move_classifier.MOVE_TYPES_STR.get(move_type, "Wrong")))
 
-    # Test Framework
+
+def main():
+    test_MoveGener()
+    test_gen_type_8_serial_single()
+    test_gen_type_9_serial_pair()
+    test_gen_type_10_serial_triple()
+    test_gen_type_11_serial_3_1()
+    test_gen_type_12_serial_3_2()
+    test_GenAnyN()
+    test_MoveClassifier()
     
 
 main()

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import copy
-from common import s2v
+from common import s2v, v2s
 
 
 class UIEngine(object):
@@ -59,10 +59,9 @@ class UIEngine(object):
             c_move.remove(c_move[0])
         return rest_cards
 
-    def run(self):
-        self.declare_commands()
-
-        # Initial Cards of LandLord and Farmer
+    def init_cards(self):
+        lord_cards = list()
+        farmer_cards = list()
 
         print("请输入地主的最初牌型：")
         input_cards = raw_input('')
@@ -92,11 +91,33 @@ class UIEngine(object):
                 if self.valid_cards(farmer_cards):
                     break
 
+        return lord_cards, farmer_cards
+
+    def show_cards(self, farmer_cards=list(), lord_cards=list()):
+        print('-' * 30)
+        print("地主的牌: ")
+        cards = ''
+        for i in lord_cards:
+            cards += v2s[i] + ' '
+        print(cards)
+
+        print("农民的牌: ")
+        cards = ''
+        for i in lord_cards:
+            cards += v2s[i] + ' '
+        print(cards)
+
+    def run(self):
+        self.declare_commands()
+        lord_cards, farmer_cards = self.init_cards()
+
         # Start playing!
 
         current_player = 'Farmer'  # 'Farmer' or 'Lord'
 
         while True:  # Playing
+            self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
+
             if current_player == 'Farmer':
                 print('现在轮到农民出牌: ')
                 input_move = raw_input('')
