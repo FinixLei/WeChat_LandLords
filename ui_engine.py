@@ -111,13 +111,15 @@ class UIEngine(object):
         self.declare_commands()
         lord_cards, farmer_cards = self.init_cards()
 
-        # Start playing!
+        def _play(player, farmer_cards, lord_cards):
+            while True:
+                if player == 'Farmer':
+                    print('现在轮到农民出牌: ')
+                    current_cards = farmer_cards
+                else:
+                    print('现在轮到地主出牌')
+                    current_cards = lord_cards
 
-        current_player = 'Farmer'  # 'Farmer' or 'Lord'
-
-        while True:  # Playing
-            if current_player == 'Farmer':
-                print('现在轮到农民出牌: ')
                 input_move = raw_input('')
                 self.check_quit_command(input_move)
 
@@ -125,7 +127,7 @@ class UIEngine(object):
                     current_move = []
                 else:
                     current_move = self.format_cards(input_move.split())
-                    if not self.valid_move(current_move, farmer_cards):
+                    if not self.valid_move(current_move, current_cards):
                         while True:
                             print("错误的出牌，请重新输入: ")
                             input_move = raw_input('')
@@ -134,42 +136,25 @@ class UIEngine(object):
                                 current_move = []
                             else:
                                 current_move = self.format_cards(input_move.split())
-                                if self.valid_move(current_move, farmer_cards):
+                                if self.valid_move(current_move, current_cards):
                                     break
 
-                farmer_cards = self.get_rest_cards(current_move, farmer_cards)
+                current_cards = self.get_rest_cards(current_move, current_cards)
+                if player == 'Farmer':
+                    farmer_cards = current_cards
+                else:
+                    lord_cards = current_cards
+
                 self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
+
                 if len(farmer_cards) == 0:
                     print("农民胜利!!!")
                     exit(0)
-                else:
-                    current_player = 'LandLord'
-
-            else:  # Now it's turn to Landlord
-                print('现在轮到地主出牌: ')
-                input_move = raw_input('')
-                self.check_quit_command(input_move)
-
-                if self.pass_move(input_move):
-                    current_move = []
-                else:
-                    current_move = self.format_cards(input_move.split())
-                    if not self.valid_move(current_move, lord_cards):
-                        while True:
-                            print("错误的出牌，请重新输入: ")
-                            input_move = raw_input('')
-                            self.check_quit_command(input_move)
-                            if self.pass_move(input_move):
-                                current_move = []
-                            else:
-                                current_move = self.format_cards(input_move.split())
-                                if self.valid_move(current_move, lord_cards):
-                                    break
-
-                lord_cards = self.get_rest_cards(current_move, lord_cards)
-                self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
-                if len(lord_cards) == 0:
+                elif len(lord_cards) == 0:
                     print("地主胜利!!!")
                     exit(0)
                 else:
-                    current_player = 'Farmer'
+                    player = 'Lord' if player == 'Farmer' else 'Farmer'
+
+        # Start playing!
+        _play('Farmer', farmer_cards, lord_cards)
