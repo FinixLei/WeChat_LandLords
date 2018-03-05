@@ -1,16 +1,37 @@
 欢乐斗地主之残局解答器
 
-每天利用一点业余时间来开发；
-正在开发过程中，争取每天更新......
+** Since the author is busy on work and learning recently, 
+this project may be suspended for some time or be updated unfrequently. **
+** - Finix 2018.03.05
 
 
 # TODO:
-1. UIEngine: 人机交互：初始化牌局，轮流出牌，判定输赢
-2. 应招判断器
-3 核心部分：蒙特卡洛推演
+1. Refactor UIEngine with Position Expression. 
+   结合局面表达，重构/优化UIEngine. 
+   
+2. Move Responser
+   应招判断器
+   
+3 核心部分：蒙特卡洛树搜索
 
 
-# 1. 招法分类 + 应招判断
+# Done
+
+1. MoveGener (Move Generator)
+   Generate all the 14 types of moves
+   
+2. MoveClassifier (Move type classifier)
+   Given a list (i.e. a move), tell which type it belongs to. 
+   
+3. Test Framework
+   See test.py
+   
+4. UIEngine 
+   The draft is done. Still need refactoring. 
+
+---------------------------------------------------------------------------
+
+# 招法分类 & 应招判断
 
 class MoveClassifier
 
@@ -29,15 +50,10 @@ type_12_serial_3_2      <- self, type_4_bomb, type_5_king_bomb
 type_13_4_2             <- self,              type_5_king_bomb
 type_14_4_4             <- self,              type_5_king_bomb
 
-# 2. 招法生成
-
-class MoveGener
-
-# 3. 局面表示
-
-class Situation
 
 -----------------------------------------------------------------------------
+
+# MC Tree: 
 
 S1 
 S21, S22, ..., S2n2 
@@ -48,11 +64,9 @@ S1 + m1 = S21; S1+m2 = S22; ... S1 + mn = S2n
 ...
 Sknx = [a is empty or b is empty] => a win or b win
 
-可能是找出胜率最高的move
-
 -----------------------------------------------------------------------------
 
-界面设计：
+# UI Design
 
 可输入命令如下:
 quit  - 退出程序
