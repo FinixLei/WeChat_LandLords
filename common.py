@@ -1,5 +1,4 @@
 import copy
-import sys
 import time
 from functools import wraps
 
@@ -30,6 +29,7 @@ v2s = {
 MIN_SINGLE_CARDS = 5
 MIN_PAIRS = 3
 MIN_TRIPLES = 2
+
 
 def format_input(cards_list):
     return sorted([s2v[i] if i in s2v else i for i in cards_list])
