@@ -1,9 +1,10 @@
+import copy
 import random
 import move_classifier
 import move_gener
 
 
-def play_move(cards, rival_move):
+def get_possible_moves(cards, rival_move):
     """
     :param cards, a list, current cards
     :param rival_move, a list, rival's move
@@ -16,7 +17,6 @@ def play_move(cards, rival_move):
     move_type = result.get('type')
     move_serial_num = result.get('serial_num', 1)
     moves = list()
-    print("move_type = %s" % move_type)
 
     if move_type == move_classifier.TYPE_0_PASS:
         # generate a random move
@@ -71,3 +71,29 @@ def play_move(cards, rival_move):
         moves = moves + mg.gen_type_4_bomb() + mg.gen_type_5_king_bomb()
 
     return moves
+
+
+def do_a_move(lord_cards=[], farmer_cards=[],
+              previous_move=[], player='farmer'):
+    lc = copy.deepcopy(lord_cards)
+    fc = copy.deepcopy(farmer_cards)
+    pm = copy.deepcopy(previous_move)
+
+    print("lord cards: %s" % lord_cards)
+    print("farmer cards: %s" % farmer_cards)
+    print("current player is %s" % player)
+    print("previous move: %s" % previous_move)
+
+    if player == 'farmer':
+        all_moves = get_possible_moves(fc, pm)
+    else:
+        all_moves = get_possible_moves(lc, pm)
+
+    if len(all_moves) == 0:
+        move = []
+    else:
+        move = all_moves[random.randint(0, len(all_moves)-1)]
+
+    print("current move: %s" % move)
+    print("-" * 20)
+    return move

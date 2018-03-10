@@ -56,6 +56,23 @@ def print_func_name(fn):
     return wrapper
 
 
+def get_rest_cards(cards, move):
+    """
+    :param cards: a list, current cards
+    :param move: a list, current move
+    :return: rest_cards, a list, rest cards
+    """
+    rest_cards = copy.deepcopy(cards)
+    current_move = copy.deepcopy(move)
+    while len(current_move) > 0:
+        if current_move[0] in rest_cards:
+            rest_cards.remove(current_move[0])
+            current_move.remove(current_move[0])
+        else:
+            raise Exception("move is not a sub set of cards")
+    return rest_cards
+
+
 class GenAnyN(object):
     """
     Get any N cards from a card list

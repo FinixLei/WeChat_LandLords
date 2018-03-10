@@ -1,8 +1,8 @@
 import move_classifier
-from common import s2v, v2s, format_input, GenAnyN, print_func_name
+from common import format_input, GenAnyN, print_func_name, get_rest_cards
 from move_gener import MovesGener
 from ui_engine import UIEngine
-from move_player import play_move
+from move_player import get_possible_moves, do_a_move
 
 a = [3, 3, 3, 4, 4, 4, 6, 7, 8, 9, 10, 10, 'K']
 b = [6, 7, 8, 9, 10, 'J', 'J', 'Q', 'Q', 'Q', 'Y']
@@ -105,14 +105,49 @@ def test_ui_engine():
 
 
 @print_func_name
-def test_move_play():
+def test_get_possible_moves():
     rival_move = [3, 3, 4, 4, 5, 5]
     cards = [5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 9, 20, 30]
-    print("move = %s" % play_move(cards, rival_move))
+    print("moves = %s" % get_possible_moves(cards, rival_move))
 
     rival_move = [5, 5, 5, 6, 6, 6, 7, 8]
     cards = [7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 11, 12, 20, 30]
-    print("move = %s" % play_move(cards, rival_move))
+    print("moves = %s" % get_possible_moves(cards, rival_move))
+
+
+@print_func_name
+def test_do_interact_moves():
+    lord_cards = [2, 3, 4, 5, 5, 7, 7]
+    farmer_cards = [3, 6, 9, 9, 10, 4]
+    player = 'lord'
+
+    move = do_a_move(lord_cards=lord_cards,
+                     farmer_cards=farmer_cards,
+                     previous_move=[],
+                     player=player)
+    lord_cards = get_rest_cards(lord_cards, move)
+    previous_move = move
+
+    while lord_cards and farmer_cards:
+        player = 'farmer' if player == 'lord' else 'lord'
+
+        move = do_a_move(lord_cards=lord_cards,
+                         farmer_cards=farmer_cards,
+                         previous_move=previous_move,
+                         player=player)
+
+        if player == 'farmer':
+            farmer_cards = get_rest_cards(farmer_cards, move)
+            if not farmer_cards:
+                print("Farmer Win!")
+                break
+        else:
+            lord_cards = get_rest_cards(lord_cards, move)
+            if not lord_cards:
+                print("LandLord Win!")
+                break
+
+        previous_move = move
 
 
 def main():
@@ -125,7 +160,8 @@ def main():
     test_GenAnyN()
     test_MoveClassifier()
     # test_ui_engine()
-    test_move_play()
+    test_get_possible_moves()
+    test_do_interact_moves()
 
 
 main()
