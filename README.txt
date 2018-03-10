@@ -29,7 +29,7 @@ this project may be suspended for some time or be updated infrequently.
 4. MoveClassifier (Move type classifier)
    Give a move, tell which type it belongs to.
 
-5. get_possible_moves(cards, rival_move)
+5. get_resp_moves(cards, rival_move)
    Give all the possible moves per cards on hand and the rival's move
 
 --------------------------------------------------------------------------

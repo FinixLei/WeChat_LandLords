@@ -5,7 +5,7 @@ import move_gener
 import move_filter
 
 
-def get_possible_moves(cards, rival_move):
+def get_resp_moves(cards, rival_move):
     """
     :param cards, a list, current cards
     :param rival_move, a list, rival's move
@@ -98,9 +98,9 @@ def do_a_move(lord_cards=[], farmer_cards=[],
     pm = copy.deepcopy(previous_move)
 
     if player == 'farmer':
-        all_moves = get_possible_moves(fc, pm)
+        all_moves = get_resp_moves(fc, pm)
     else:
-        all_moves = get_possible_moves(lc, pm)
+        all_moves = get_resp_moves(lc, pm)
 
     if len(all_moves) == 0:
         move = []

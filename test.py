@@ -2,7 +2,7 @@ import move_classifier
 from common import format_input, GenAnyN, print_func_name, get_rest_cards
 from move_gener import MovesGener
 from ui_engine import UIEngine
-from move_player import get_possible_moves, do_a_move
+from move_player import get_resp_moves, do_a_move
 from move_filter import MoveFilter
 
 a = [3, 3, 3, 4, 4, 4, 6, 7, 8, 9, 10, 10, 'K']
@@ -106,14 +106,14 @@ def test_ui_engine():
 
 
 @print_func_name
-def test_get_possible_moves():
+def test_get_resp_moves():
     rival_move = [3, 3, 4, 4, 5, 5]
     cards = [5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 9, 20, 30]
-    print("moves = %s" % get_possible_moves(cards, rival_move))
+    print("moves = %s" % get_resp_moves(cards, rival_move))
 
     rival_move = [5, 5, 5, 6, 6, 6, 7, 8]
     cards = [7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 11, 12, 20, 30]
-    print("moves = %s" % get_possible_moves(cards, rival_move))
+    print("moves = %s" % get_resp_moves(cards, rival_move))
 
 
 @print_func_name
@@ -245,7 +245,7 @@ def test_filter_type_14_4_4():
 
 
 @print_func_name
-def test_do_interact_moves():
+def test_auto_play_moves():
     lord_cards = format_input([2, 3, 7, 7])
     farmer_cards = format_input([3, 4, 5, 5])
     player = 'farmer'
@@ -327,8 +327,8 @@ def main():
 
     # test_ui_engine()
 
-    test_get_possible_moves()
-    test_do_interact_moves()
+    test_get_resp_moves()
+    test_auto_play_moves()
 
 
 main()
