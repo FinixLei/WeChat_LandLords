@@ -1,17 +1,22 @@
 欢乐斗地主之残局解答器
 
 ** Since the author is busy on work and learning recently, 
-this project may be suspended for some time or be updated unfrequently. **
-** - Finix 2018.03.05
+this project may be suspended for some time or be updated unfrequently.
+   因为工作和学习繁忙，作者将暂停或以较低频率更新本项目。
+**
+-- Finix 2018.03.05
 
 
 # TODO:
-1. 简单的局面自推演
+1. 简单的局面自推演 (50%)
 
-2. Refactor UIEngine with Position Expression.
-   结合局面表达，重构UIEngine.
-   
+2. 添加 MoveFilter ，在所生成的move中，筛选出正确的招法
+
 3. 核心部分：蒙特卡洛树搜索
+
+4. Refactor UIEngine with Position Expression.
+   结合局面表达，重构UIEngine.
+   有了局面自推演，这一部分目前不再重要，优先级降低
 
 
 # Done
@@ -28,8 +33,8 @@ this project may be suspended for some time or be updated unfrequently. **
 4. MoveClassifier (Move type classifier)
    Given a list (i.e. a move), tell which type it belongs to.
 
-5. play_move(cards, rival_move)
-   Give all the possible moves per cards on hand and rival's move
+5. get_possible_moves(cards, rival_move)
+   Give all the possible moves per cards on hand and the rival's move
 
 ---------------------------------------------------------------------------
 
