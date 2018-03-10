@@ -20,8 +20,7 @@ def play_move(cards, rival_move):
 
     if move_type == move_classifier.TYPE_0_PASS:
         # generate a random move
-        all_moves = mg.gen_moves()
-        moves = all_moves[random.randint(0, len(all_moves)-1)]
+        moves = mg.gen_moves()
 
     elif move_type == move_classifier.TYPE_1_SINGLE:
         moves = mg.gen_type_1_single()

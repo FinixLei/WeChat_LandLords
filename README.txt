@@ -6,28 +6,30 @@ this project may be suspended for some time or be updated unfrequently. **
 
 
 # TODO:
-1. Refactor UIEngine with Position Expression. 
-   结合局面表达，重构/优化UIEngine. 
+1. 简单的局面自推演
+
+2. Refactor UIEngine with Position Expression.
+   结合局面表达，重构UIEngine.
    
-2. Move Responser
-   应招判断器
-   
-3 核心部分：蒙特卡洛树搜索
+3. 核心部分：蒙特卡洛树搜索
 
 
 # Done
 
-1. MoveGener (Move Generator)
+1. Test Framework
+   See test.py
+
+2. UIEngine
+   The draft is done. Still need refactoring.
+
+3. MoveGener (Move Generator)
    Generate all the 14 types of moves
    
-2. MoveClassifier (Move type classifier)
-   Given a list (i.e. a move), tell which type it belongs to. 
-   
-3. Test Framework
-   See test.py
-   
-4. UIEngine 
-   The draft is done. Still need refactoring. 
+4. MoveClassifier (Move type classifier)
+   Given a list (i.e. a move), tell which type it belongs to.
+
+5. play_move(cards, rival_move)
+   Give all the possible moves per cards on hand and rival's move
 
 ---------------------------------------------------------------------------
 
@@ -47,8 +49,8 @@ type_9_serial_pair      <- self, type_4_bomb, type_5_king_bomb
 type_10_serial_triple   <- self, type_4_bomb, type_5_king_bomb
 type_11_serial_3_1      <- self, type_4_bomb, type_5_king_bomb
 type_12_serial_3_2      <- self, type_4_bomb, type_5_king_bomb
-type_13_4_2             <- self,              type_5_king_bomb
-type_14_4_4             <- self,              type_5_king_bomb
+type_13_4_2             <- self, type_4_bomb, type_5_king_bomb
+type_14_4_4             <- self, type_4_bomb, type_5_king_bomb
 
 
 -----------------------------------------------------------------------------
