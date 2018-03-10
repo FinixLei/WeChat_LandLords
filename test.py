@@ -3,6 +3,7 @@ from common import format_input, GenAnyN, print_func_name, get_rest_cards
 from move_gener import MovesGener
 from ui_engine import UIEngine
 from move_player import get_possible_moves, do_a_move
+from move_filter import MoveFilter
 
 a = [3, 3, 3, 4, 4, 4, 6, 7, 8, 9, 10, 10, 'K']
 b = [6, 7, 8, 9, 10, 'J', 'J', 'Q', 'Q', 'Q', 'Y']
@@ -150,16 +151,162 @@ def test_do_interact_moves():
         previous_move = move
 
 
+@print_func_name
+def test_filter_type_6_3_1():
+    moves = [
+        [3, 3, 3, 20],
+        [4, 4, 4, 8],
+        [5, 5, 5, 9],
+        [6, 6, 6, 10]
+    ]
+    rival_move = [4, 4, 4, 3]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_6_3_1(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_7_3_2():
+    moves = [
+        [3, 3, 3, 7, 7],
+        [4, 4, 4, 8, 8],
+        [5, 5, 5, 9, 9],
+        [6, 6, 6, 10, 10]
+    ]
+    rival_move = [4, 4, 4, 3, 3]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_7_3_2(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_8_serial_single():
+    moves = [
+        [3, 4, 5, 6, 7, 8],
+        [4, 5, 6, 7, 8, 9],
+        [5, 6, 7, 8, 9, 10]
+    ]
+    rival_move = [4, 5, 6, 7, 8, 9]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_8_serial_single(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_9_serial_pair():
+    moves = [
+        [3, 3, 4, 4, 5, 5],
+        [4, 4, 5, 5, 6, 6],
+        [7, 7, 8, 8, 9, 9]
+    ]
+    rival_move = [3, 3, 4, 4, 5, 5]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_9_serial_pair(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_10_serial_triple():
+    moves = [
+        [3, 3, 3, 4, 4, 4, 5, 5, 5],
+        [5, 5, 5, 6, 6, 6, 7, 7, 7],
+        [7, 7, 7, 8, 8, 8, 9, 9, 9]
+    ]
+    rival_move = [6, 6, 6, 7, 7, 7, 8, 8, 8]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_10_serial_triple(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_11_serial_3_1():
+    moves = [
+        [3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 7, 8],
+        [5, 5, 8, 9, 5, 6, 6, 6, 7, 7, 7, 10],
+        [7, 7, 7, 3, 4, 5, 8, 8, 8, 9, 9, 9]
+    ]
+    rival_move = [6, 6, 6, 7, 7, 5, 7, 8, 8, 8, 3, 4]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_11_serial_3_1(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_12_serial_3_2():
+    moves = [
+        [3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 8, 7, 8],
+        [5, 5, 8, 8, 9, 9, 5, 6, 6, 6, 7, 7, 7, 10, 10],
+        [7, 7, 7, 3, 3, 4, 5, 4, 5, 8, 8, 8, 9, 9, 9]
+    ]
+    rival_move = [6, 6, 6, 7, 7, 5, 7, 8, 8, 8, 3, 3, 4, 5, 4]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_12_serial_3_2(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_13_4_2():
+    moves = [
+        [3, 3, 3, 3, 4, 5],
+        [5, 5, 5, 5, 8, 9],
+        [7, 7, 7, 7, 3, 4]
+    ]
+    rival_move = [6, 6, 6, 6, 11, 12]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_13_4_2(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_filter_type_14_4_4():
+    moves = [
+        [3, 3, 3, 3, 4, 4, 5, 5],
+        [5, 5, 5, 5, 8, 8, 9, 9],
+        [7, 7, 7, 7, 3, 3, 4, 4]
+    ]
+    rival_move = [6, 6, 6, 6, 11, 11, 12, 12]
+
+    mf = MoveFilter()
+    filtered_moves = mf.filter_type_14_4_4(moves, rival_move)
+    print("Filtered moves = %s" % filtered_moves)
+
+
 def main():
+    # Test MoveGener
     test_MoveGener()
     test_gen_type_8_serial_single()
     test_gen_type_9_serial_pair()
     test_gen_type_10_serial_triple()
     test_gen_type_11_serial_3_1()
     test_gen_type_12_serial_3_2()
-    test_GenAnyN()
+
+    # Test MoveFilter
+    test_filter_type_6_3_1()
+    test_filter_type_7_3_2()
+    test_filter_type_8_serial_single()
+    test_filter_type_9_serial_pair()
+    test_filter_type_10_serial_triple()
+    test_filter_type_11_serial_3_1()
+    test_filter_type_12_serial_3_2()
+    test_filter_type_13_4_2()
+    test_filter_type_14_4_4()
+
+    # Test MoveClassifier
     test_MoveClassifier()
+
+    # Test common
+    test_GenAnyN()
+
     # test_ui_engine()
+
     test_get_possible_moves()
     test_do_interact_moves()
 

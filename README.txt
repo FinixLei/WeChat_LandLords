@@ -10,11 +10,9 @@ this project may be suspended for some time or be updated infrequently.
 # TODO:
 1. 简单的局面自推演 (50%)
 
-2. 添加 MoveFilter ，在所生成的move中，筛选出正确的招法
+2. 核心部分：蒙特卡洛树搜索
 
-3. 核心部分：蒙特卡洛树搜索
-
-4. Refactor UIEngine with Position Expression.
+3. Refactor UIEngine with Position Expression.
    结合局面表达，重构UIEngine.
    有了局面自推演，这一部分目前不再重要，优先级降低
 

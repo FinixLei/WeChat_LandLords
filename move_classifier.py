@@ -171,7 +171,7 @@ class MoveClassifier(object):
             return {'type': TYPE_10_SERIAL_TRIPLE, 'serial_num': card_types}
 
         # Check Type 11 (serial 3+1) and Type 12 (serial 3+2)
-        if count_dict.get(3) >= MIN_TRIPLES:
+        if count_dict.get(3, 0) >= MIN_TRIPLES:
             serial_3 = list()
             single = list()
             pair = list()
