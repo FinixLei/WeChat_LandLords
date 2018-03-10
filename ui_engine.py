@@ -55,10 +55,7 @@ class UIEngine(object):
             else:
                 farmer_move = format_input_cards(farmer_move.split())
 
-            if not lorder_move:  # LandLord passes last time
-                possible_moves = get_resp_moves(farmer_cards, lorder_move, can_be_pass=False)
-            else:
-                possible_moves = get_resp_moves(farmer_cards, lorder_move)
+            possible_moves = get_resp_moves(farmer_cards, lorder_move)
             while farmer_move not in possible_moves:
                 print("错误的出牌！请重新帮地主出牌: ")
                 farmer_move = raw_input("")
@@ -81,12 +78,10 @@ class UIEngine(object):
             print("-" * 20)
 
             # LandLorder plays a move
-            can_be_pass = True if farmer_move else False
             lorder_move = do_a_move(lorder_cards=lorder_cards,
                                     farmer_cards=farmer_cards,
                                     previous_move=farmer_move,
-                                    player="lorder",
-                                    can_be_pass=can_be_pass)
+                                    player="lorder")
 
             lorder_cards = get_rest_cards(lorder_cards, lorder_move)
             if len(lorder_cards) == 0:

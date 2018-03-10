@@ -5,7 +5,7 @@ import move_gener
 import move_filter
 
 
-def get_resp_moves(cards, rival_move, can_be_pass=True):
+def get_resp_moves(cards, rival_move):
     """
     :param cards, a list, current cards
     :param rival_move, a list, rival's move
@@ -88,23 +88,22 @@ def get_resp_moves(cards, rival_move, can_be_pass=True):
                          move_classifier.TYPE_5_KING_BOMB]:
         moves = moves + mg.gen_type_4_bomb() + mg.gen_type_5_king_bomb()
 
-    if can_be_pass:
+    if rival_move:  # rival_move is not 'pass'
         moves = moves + [[]]
 
     return moves
 
 
 def do_a_move(lorder_cards=[], farmer_cards=[],
-              previous_move=[], player='farmer',
-              can_be_pass=True):
+              previous_move=[], player='farmer'):
     lc = copy.deepcopy(lorder_cards)
     fc = copy.deepcopy(farmer_cards)
     pm = copy.deepcopy(previous_move)
 
     if player == 'farmer':
-        all_moves = get_resp_moves(fc, pm, can_be_pass=can_be_pass)
+        all_moves = get_resp_moves(fc, pm)
     else:
-        all_moves = get_resp_moves(lc, pm, can_be_pass=can_be_pass)
+        all_moves = get_resp_moves(lc, pm)
 
     if len(all_moves) == 0:
         move = []
