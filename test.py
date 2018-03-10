@@ -297,8 +297,11 @@ def test_auto_play_moves():
 @print_func_name
 def test_ui_engine():
     ui_engine = UIEngine()
-    ui_engine.run(lorder_cards=[3, 4, 'J', 'A', 2],
-                  farmer_cards=[4, 5, 'K', 'Q', 'Y'])
+    # ui_engine.run(lorder_cards=[3, 4, 'J', 'A', 2],
+    #               farmer_cards=[4, 5, 'K', 'Q', 'Y'])
+
+    ui_engine.run(farmer_cards=[2, 'A', 'J', 10, 10, 7, 7, 6, 5, 5, 4, 3, 3],
+                  lorder_cards=['A', 'A', 'K', 'J', 9, 9, 8, 6, 4])
 
 
 def main():
