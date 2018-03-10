@@ -109,6 +109,7 @@ def do_a_move(lorder_cards=[], farmer_cards=[],
         move = []
     else:
         # move = all_moves[random.randint(0, len(all_moves)-1)]
+        print("Debug: all moves: %s" % all_moves)
         move = all_moves[0]
 
     return move
