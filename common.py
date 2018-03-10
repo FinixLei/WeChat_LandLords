@@ -31,8 +31,12 @@ MIN_PAIRS = 3
 MIN_TRIPLES = 2
 
 
-def format_input(cards_list):
-    return sorted([s2v[i] if i in s2v else i for i in cards_list])
+def format_input_cards(cards):
+    return sorted([s2v[i] if i in s2v else i for i in cards])
+
+
+def format_output_cards(cards):
+    return sorted([v2s[i] if i in v2s else i for i in cards])
 
 
 def calc_time(fn):

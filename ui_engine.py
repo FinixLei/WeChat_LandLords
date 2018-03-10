@@ -1,161 +1,95 @@
 # coding=utf-8
 
-import copy
-from common import s2v, v2s
+from common import format_input_cards, format_output_cards, get_rest_cards
+from move_player import get_resp_moves, do_a_move
 
 
 class UIEngine(object):
 
     def declare_commands(self):
         print("可输入的命令及大小王牌型如下:")
-        print("quit - 退出程序")
         print("pass - 过，不出牌")
         print("Y - 小王")
         print("Z - 大王")
         print("-" * 30)
 
-    def format_cards(self, cards):
-        new_cards = list()
-        for i in cards:
-            if i in s2v:
-                new_cards.append(s2v[i])
+    @staticmethod
+    def run(lorder_cards=[], farmer_cards=[]):
+        lorder_cards = format_input_cards(lorder_cards)
+        farmer_cards = format_input_cards(farmer_cards)
+        player = 'farmer'
+
+        print("初始状态: ")
+        print("地主家的牌: %s" % format_output_cards(lorder_cards))
+        print("农民家的牌: %s" % format_output_cards(farmer_cards))
+        print("当前出牌者: %s" % "农民")
+        print("-" * 20)
+
+        # Farmer do the first move
+        farmer_move = do_a_move(lorder_cards=lorder_cards,
+                                farmer_cards=farmer_cards,
+                                previous_move=[],
+                                player=player)
+
+        farmer_cards = get_rest_cards(farmer_cards, farmer_move)
+        if len(farmer_cards) == 0:
+            print("农民出牌: %s" % format_output_cards(farmer_move))
+            print("农民胜利!")
+            return
+
+        # Lorder plays a move, and farmer plays a move, and so on.
+        while True:
+            # Print the Situation after Farmer play a move
+            str_farmer_cards = format_output_cards(farmer_move) if farmer_move else 'Pass!'
+            print("农民出牌: %s" % str_farmer_cards)
+            print("地主家的牌: %s" % format_output_cards(lorder_cards))
+            print("农民家的牌: %s" % format_output_cards(farmer_cards))
+            print("-" * 20)
+
+            # Lords play a move
+            print("请帮地主出牌:")
+            lorder_move = raw_input("")
+            if (lorder_move in ['pass', 'Pass', 'PASS', '不要']) or \
+               len(lorder_move.strip()) == 0:
+                lorder_move = []
             else:
-                new_cards.append(i)
-        return new_cards
+                lorder_move = format_input_cards(lorder_move.split())
 
-    def valid_cards(self, cards):
-        valid_range = s2v.values()
-        for card in cards:
-            if card not in valid_range:
-                return False
-        return True
-
-    def check_quit_command(self, str_input):
-        if str_input == 'quit':
-            exit(0)
-
-    def pass_move(self, str_input):
-        return True if str_input.lower() == 'pass' else False
-
-    def valid_move(self, current_move, current_cards):
-        if not self.valid_cards(current_cards):
-            return False
-
-        rest_cards = copy.deepcopy(current_cards)
-        c_move = copy.deepcopy(current_move)
-        while len(c_move) > 0:
-            if c_move[0] in rest_cards:
-                rest_cards.remove(c_move[0])
-                c_move.remove(c_move[0])
+            if not farmer_move:
+                possible_moves = get_resp_moves(lorder_cards, farmer_move, can_be_pass=False)
             else:
-                return False
-        return True
-
-    def get_rest_cards(self, current_move, current_cards):
-        rest_cards = copy.deepcopy(current_cards)
-        c_move = copy.deepcopy(current_move)
-        while len(c_move) > 0:
-            rest_cards.remove(c_move[0])
-            c_move.remove(c_move[0])
-        return rest_cards
-
-    def init_cards(self):
-        lord_cards = list()
-        farmer_cards = list()
-
-        print("请输入地主的最初牌型：")
-        input_cards = raw_input('')
-        self.check_quit_command(input_cards)
-        lord_cards = self.format_cards(input_cards.split())
-
-        if not self.valid_cards(lord_cards):
-            while True:
-                print("错误的输入，请重新输入: ")
-                input_cards = raw_input('')
-                self.check_quit_command(input_cards)
-                lord_cards = self.format_cards(input_cards.split())
-                if self.valid_cards(lord_cards):
-                    break
-
-        print("请输入农民的最初牌型：")
-        input_cards = raw_input('')
-        self.check_quit_command(input_cards)
-        farmer_cards = self.format_cards(input_cards.split())
-
-        if not self.valid_cards(farmer_cards):
-            while True:
-                print("错误的输入，请重新输入: ")
-                input_cards = raw_input('')
-                self.check_quit_command(input_cards)
-                farmer_cards = self.format_cards(input_cards.split())
-                if self.valid_cards(farmer_cards):
-                    break
-
-        return lord_cards, farmer_cards
-
-    def show_cards(self, farmer_cards=list(), lord_cards=list()):
-        print('-' * 30)
-        print("地主的牌: ")
-        cards = ''
-        for i in lord_cards:
-            cards += v2s[i] + ' '
-        print(cards)
-
-        print("农民的牌: ")
-        cards = ''
-        for i in farmer_cards:
-            cards += v2s[i] + ' '
-        print(cards)
-
-    def run(self):
-        self.declare_commands()
-        lord_cards, farmer_cards = self.init_cards()
-
-        def _play(player, farmer_cards, lord_cards):
-            while True:
-                if player == 'Farmer':
-                    print('现在轮到农民出牌: ')
-                    current_cards = farmer_cards
+                possible_moves = get_resp_moves(lorder_cards, farmer_move)
+            while lorder_move not in possible_moves:
+                print("错误的出牌！请重新帮地主出牌: ")
+                lorder_move = raw_input("")
+                if lorder_move in ['pass', 'Pass', 'PASS']:
+                    lorder_move = []
                 else:
-                    print('现在轮到地主出牌')
-                    current_cards = lord_cards
+                    lorder_move = format_input_cards(lorder_move.split())
+                possible_moves = get_resp_moves(lorder_cards, farmer_move)
 
-                input_move = raw_input('')
-                self.check_quit_command(input_move)
+            lorder_cards = get_rest_cards(lorder_cards, lorder_move)
+            if len(lorder_cards) == 0:
+                print("地主出牌: %s" % format_output_cards(lorder_move))
+                print("地主胜利！")
+                return
 
-                if self.pass_move(input_move):
-                    current_move = []
-                else:
-                    current_move = self.format_cards(input_move.split())
-                    if not self.valid_move(current_move, current_cards):
-                        while True:
-                            print("错误的出牌，请重新输入: ")
-                            input_move = raw_input('')
-                            self.check_quit_command(input_move)
-                            if self.pass_move(input_move):
-                                current_move = []
-                                break
-                            else:
-                                current_move = self.format_cards(input_move.split())
-                                if self.valid_move(current_move, current_cards):
-                                    break
+            str_lorder_move = format_output_cards(lorder_move) if lorder_move else 'Pass!'
+            print("地主出牌: %s" % str_lorder_move)
+            print("地主家的牌: %s" % format_output_cards(lorder_cards))
+            print("农民家的牌: %s" % format_output_cards(farmer_cards))
+            print("-" * 20)
 
-                current_cards = self.get_rest_cards(current_move, current_cards)
-                if player == 'Farmer':
-                    farmer_cards = current_cards
-                else:
-                    lord_cards = current_cards
+            # Farmer play a move
+            can_be_pass = True if lorder_move else False
+            farmer_move = do_a_move(lorder_cards=lorder_cards,
+                                    farmer_cards=farmer_cards,
+                                    previous_move=lorder_move,
+                                    player="farmer",
+                                    can_be_pass=can_be_pass)
 
-                self.show_cards(farmer_cards=farmer_cards, lord_cards=lord_cards)
-
-                if len(farmer_cards) == 0:
-                    print("农民胜利!!!")
-                    exit(0)
-                elif len(lord_cards) == 0:
-                    print("地主胜利!!!")
-                    exit(0)
-                else:
-                    player = 'Lord' if player == 'Farmer' else 'Farmer'
-
-        # Start playing!
-        _play('Farmer', farmer_cards, lord_cards)
+            farmer_cards = get_rest_cards(farmer_cards, farmer_move)
+            if len(farmer_cards) == 0:
+                print("农民出牌: %s" % format_output_cards(farmer_move))
+                print("农工胜利！")
+                return

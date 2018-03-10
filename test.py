@@ -1,5 +1,6 @@
 import move_classifier
-from common import format_input, GenAnyN, print_func_name, get_rest_cards
+from common import format_input_cards, format_output_cards, \
+    GenAnyN, print_func_name, get_rest_cards
 from move_gener import MovesGener
 from ui_engine import UIEngine
 from move_player import get_resp_moves, do_a_move
@@ -12,8 +13,8 @@ c = [3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 11, 12, 13, 13, 13, 
 
 @print_func_name
 def test_MoveGener():
-    print(format_input(c))
-    mg = MovesGener(format_input(c))
+    print(format_input_cards(c))
+    mg = MovesGener(format_input_cards(c))
     moves = mg.gen_moves()
     # print(moves)
     print(len(moves))
@@ -21,31 +22,31 @@ def test_MoveGener():
 
 @print_func_name
 def test_gen_type_8_serial_single():
-    mg = MovesGener(format_input(c))
+    mg = MovesGener(format_input_cards(c))
     print(mg.gen_type_8_serial_single(repeat_num=7))
 
 
 @print_func_name
 def test_gen_type_9_serial_pair():
-    mg = MovesGener(format_input(c))
+    mg = MovesGener(format_input_cards(c))
     print(mg.gen_type_9_serial_pair(repeat_num=5))
 
 
 @print_func_name
 def test_gen_type_10_serial_triple():
-    mg = MovesGener(format_input(c))
+    mg = MovesGener(format_input_cards(c))
     print(mg.gen_type_10_serial_triple(repeat_num=2))
 
 
 @print_func_name
 def test_gen_type_11_serial_3_1():
-    mg = MovesGener(format_input(c))
+    mg = MovesGener(format_input_cards(c))
     print(mg.gen_type_11_serial_3_1())
 
 
 @print_func_name
 def test_gen_type_12_serial_3_2():
-    mg = MovesGener(format_input(c))
+    mg = MovesGener(format_input_cards(c))
     print(mg.gen_type_12_serial_3_2())
 
 
@@ -97,12 +98,6 @@ def test_MoveClassifier():
               (count,
                move,
                move_classifier.MOVE_TYPES_STR.get(move_type, "Wrong")))
-
-
-@print_func_name
-def test_ui_engine():
-    ui_engine = UIEngine()
-    ui_engine.run()
 
 
 @print_func_name
@@ -246,17 +241,17 @@ def test_filter_type_14_4_4():
 
 @print_func_name
 def test_auto_play_moves():
-    lord_cards = format_input([2, 3, 7, 7])
-    farmer_cards = format_input([3, 4, 5, 5])
+    lorder_cards = format_input_cards([2, 3, 7, 7])
+    farmer_cards = format_input_cards([3, 4, 5, 5])
     player = 'farmer'
 
     print("Initial State: ")
-    print("lord cards: %s" % lord_cards)
+    print("lord cards: %s" % lorder_cards)
     print("farmer cards: %s" % farmer_cards)
     print("Current player: %s" % player)
     print("-" * 20)
 
-    move = do_a_move(lord_cards=lord_cards,
+    move = do_a_move(lorder_cards=lorder_cards,
                      farmer_cards=farmer_cards,
                      previous_move=[],
                      player=player)
@@ -264,28 +259,28 @@ def test_auto_play_moves():
     previous_move = move
 
     print("Move is: %s" % move)
-    print("lord cards: %s" % lord_cards)
+    print("lord cards: %s" % lorder_cards)
     print("farmer cards: %s" % farmer_cards)
     next_player = 'lorder' if player == 'farmer' else 'farmer'
     print("Next player: %s" % next_player)
     print("-" * 20)
 
-    while lord_cards and farmer_cards:
+    while lorder_cards and farmer_cards:
         player = 'farmer' if player == 'lord' else 'lord'
 
-        move = do_a_move(lord_cards=lord_cards,
+        move = do_a_move(lorder_cards=lorder_cards,
                          farmer_cards=farmer_cards,
                          previous_move=previous_move,
                          player=player)
 
         if player == 'farmer':
             farmer_cards = get_rest_cards(farmer_cards, move)
-            if not farmer_cards:
+            if len(farmer_cards) == 0:
                 print("Farmer Win!")
                 break
         else:
-            lord_cards = get_rest_cards(lord_cards, move)
-            if not lord_cards:
+            lorder_cards = get_rest_cards(lorder_cards, move)
+            if len(lorder_cards) == 0:
                 print("LandLord Win!")
                 break
 
@@ -293,10 +288,17 @@ def test_auto_play_moves():
 
         next_player = 'lorder' if player == 'farmer' else 'farmer'
         print("Move is: %s" % move)
-        print("lord cards: %s" % lord_cards)
+        print("lord cards: %s" % lorder_cards)
         print("farmer cards: %s" % farmer_cards)
         print("Next player: %s" % next_player)
         print("-" * 20)
+
+
+@print_func_name
+def test_ui_engine():
+    ui_engine = UIEngine()
+    ui_engine.run(lorder_cards=[3, 4, 'J', 'A', 2],
+                  farmer_cards=[4, 5, 'K', 'Q', 'Y'])
 
 
 def main():
@@ -324,11 +326,11 @@ def main():
 
     # Test common
     test_GenAnyN()
-
-    # test_ui_engine()
-
     test_get_resp_moves()
     test_auto_play_moves()
+
+    # Test UIEngine
+    test_ui_engine()
 
 
 main()
