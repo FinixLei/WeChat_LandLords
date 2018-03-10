@@ -1,7 +1,7 @@
 欢乐斗地主之残局解答器
 
 ** Since the author is busy on work and learning recently, 
-this project may be suspended for some time or be updated unfrequently.
+this project may be suspended for some time or be updated infrequently.
    因为工作和学习繁忙，作者将暂停或以较低频率更新本项目。
 **
 -- Finix 2018.03.05
