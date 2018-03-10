@@ -97,11 +97,6 @@ def do_a_move(lord_cards=[], farmer_cards=[],
     fc = copy.deepcopy(farmer_cards)
     pm = copy.deepcopy(previous_move)
 
-    print("lord cards: %s" % lord_cards)
-    print("farmer cards: %s" % farmer_cards)
-    print("current player is %s" % player)
-    print("previous move: %s" % previous_move)
-
     if player == 'farmer':
         all_moves = get_possible_moves(fc, pm)
     else:
@@ -112,6 +107,5 @@ def do_a_move(lord_cards=[], farmer_cards=[],
     else:
         move = all_moves[random.randint(0, len(all_moves)-1)]
 
-    print("current move: %s" % move)
-    print("-" * 20)
+    print("In do_a_move(): move is %s" % move)
     return move

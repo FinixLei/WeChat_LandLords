@@ -117,41 +117,6 @@ def test_get_possible_moves():
 
 
 @print_func_name
-def test_do_interact_moves():
-    lord_cards = [2, 3, 4, 5, 5, 7, 7]
-    farmer_cards = [3, 6, 9, 9, 10, 4]
-    player = 'lord'
-
-    move = do_a_move(lord_cards=lord_cards,
-                     farmer_cards=farmer_cards,
-                     previous_move=[],
-                     player=player)
-    lord_cards = get_rest_cards(lord_cards, move)
-    previous_move = move
-
-    while lord_cards and farmer_cards:
-        player = 'farmer' if player == 'lord' else 'lord'
-
-        move = do_a_move(lord_cards=lord_cards,
-                         farmer_cards=farmer_cards,
-                         previous_move=previous_move,
-                         player=player)
-
-        if player == 'farmer':
-            farmer_cards = get_rest_cards(farmer_cards, move)
-            if not farmer_cards:
-                print("Farmer Win!")
-                break
-        else:
-            lord_cards = get_rest_cards(lord_cards, move)
-            if not lord_cards:
-                print("LandLord Win!")
-                break
-
-        previous_move = move
-
-
-@print_func_name
 def test_filter_type_6_3_1():
     moves = [
         [3, 3, 3, 20],
@@ -277,6 +242,61 @@ def test_filter_type_14_4_4():
     mf = MoveFilter()
     filtered_moves = mf.filter_type_14_4_4(moves, rival_move)
     print("Filtered moves = %s" % filtered_moves)
+
+
+@print_func_name
+def test_do_interact_moves():
+    lord_cards = format_input([2, 3, 7, 7])
+    farmer_cards = format_input([3, 4, 5, 5])
+    player = 'farmer'
+
+    print("Initial State: ")
+    print("lord cards: %s" % lord_cards)
+    print("farmer cards: %s" % farmer_cards)
+    print("Current player: %s" % player)
+    print("-" * 20)
+
+    move = do_a_move(lord_cards=lord_cards,
+                     farmer_cards=farmer_cards,
+                     previous_move=[],
+                     player=player)
+    farmer_cards = get_rest_cards(farmer_cards, move)
+    previous_move = move
+
+    print("Move is: %s" % move)
+    print("lord cards: %s" % lord_cards)
+    print("farmer cards: %s" % farmer_cards)
+    next_player = 'lorder' if player == 'farmer' else 'farmer'
+    print("Next player: %s" % next_player)
+    print("-" * 20)
+
+    while lord_cards and farmer_cards:
+        player = 'farmer' if player == 'lord' else 'lord'
+
+        move = do_a_move(lord_cards=lord_cards,
+                         farmer_cards=farmer_cards,
+                         previous_move=previous_move,
+                         player=player)
+
+        if player == 'farmer':
+            farmer_cards = get_rest_cards(farmer_cards, move)
+            if not farmer_cards:
+                print("Farmer Win!")
+                break
+        else:
+            lord_cards = get_rest_cards(lord_cards, move)
+            if not lord_cards:
+                print("LandLord Win!")
+                break
+
+        previous_move = move
+
+        next_player = 'lorder' if player == 'farmer' else 'farmer'
+        print("Move is: %s" % move)
+        print("lord cards: %s" % lord_cards)
+        print("farmer cards: %s" % farmer_cards)
+        print("Next player: %s" % next_player)
+        print("-" * 20)
 
 
 def main():
