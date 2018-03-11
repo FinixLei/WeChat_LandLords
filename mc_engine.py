@@ -6,6 +6,25 @@ from move_classifier import MoveClassifier
 
 nodes_num = 0
 m_class = MoveClassifier()
+mc_records = list()
+
+
+def dump_mc_records():
+    global mc_records
+    for record in mc_records:
+        move = record.get('move', '')
+        farmer_win = record.get('farmer_win', 0)
+        lorder_win = record.get('lorder_win', 0)
+        lorder_win_rate = float(lorder_win) / (lorder_win+farmer_win) if lorder_win else 0
+        print('move: %s\n  lorder win rate: %.2f%s, lorder: %s, farmer: %s'
+              % (move, 100*lorder_win_rate, '%', lorder_win, farmer_win))
+
+
+def show_node_info():
+    if nodes_num % 1e4 == 0:
+        print("Calculated %s nodes" % nodes_num)
+    if nodes_num % 1e5 == 0:
+        dump_mc_records()
 
 
 def show_initial_state(lorder_cards=list(), farmer_cards=list(), player='lorder'):
@@ -29,20 +48,20 @@ def mc_search(lorder_cards=list(), farmer_cards=list(),
         if len(lorder_cards) == 0:
             record['lorder_win'] += 1
             nodes_num += 1
-            if nodes_num % 10000 == 0:
-                print("Calculated %s nodes" % nodes_num)
+            show_node_info()
             return
 
     elif next_player == 'lorder':
         if len(farmer_cards) == 0:
             record['farmer_win'] += 1
             nodes_num += 1
-            if nodes_num % 10000 == 0:
-                print("Calculated %s nodes" % nodes_num)
+            show_node_info()
             return
 
     if next_player == 'farmer':
         all_moves = get_resp_moves(farmer_cards, current_move)
+        # a kind of optimization
+        all_moves = sorted(all_moves, key=lambda x: len(x), reverse=True)
         for farmer_move in all_moves:
             fc = get_rest_cards(farmer_cards, farmer_move)
             mc_search(lorder_cards=lorder_cards,
@@ -53,6 +72,8 @@ def mc_search(lorder_cards=list(), farmer_cards=list(),
 
     else:  # next_player is 'lorder'
         all_moves = get_resp_moves(lorder_cards, current_move)
+        # a kind of optimization
+        all_moves = sorted(all_moves, key=lambda x: len(x), reverse=True)
         for lorder_move in all_moves:
             lc = get_rest_cards(lorder_cards, lorder_move)
             mc_search(lorder_cards=lc,
@@ -64,15 +85,20 @@ def mc_search(lorder_cards=list(), farmer_cards=list(),
 
 @calc_time
 def start_mc(lorder_cards=list(), farmer_cards=list()):
+    global mc_records
+
     lorder_cards = format_input_cards(lorder_cards)
     farmer_cards = format_input_cards(farmer_cards)
 
     mg = MovesGener(format_input_cards(lorder_cards))
     all_lorder_moves = mg.gen_moves()
+    # a kind of optimization
+    all_lorder_moves = sorted(all_lorder_moves, key=lambda x: len(x), reverse=True)
 
-    mc_records = list()
     for i in range(len(all_lorder_moves)):
-        mc_records.append({'farmer_win': 0, 'lorder_win': 0})
+        mc_records.append({'move': all_lorder_moves[i],
+                           'farmer_win': 0,
+                           'lorder_win': 0})
 
     count = 0
     for move in all_lorder_moves:
@@ -93,8 +119,8 @@ def main():
     # lorder_cards = ['A', 'A', 'K', 'J', 9, 9, 8, 6, 4]
     # farmer_cards = ['2', 'A', 'J', 10, 10, 7, 7, 6, 5, 5, 4, 3, 3]
 
-    lorder_cards = [3, 4, 5, 6, 7]
-    farmer_cards = [4, 5, 6, 7, 8]
+    lorder_cards = [3, 4, 5, 6, 7, 8]
+    farmer_cards = [4, 5, 6, 7, 8, 9]
     all_moves, records = start_mc(lorder_cards=lorder_cards, farmer_cards=farmer_cards)
 
     for i in range(len(all_moves)):
@@ -102,7 +128,7 @@ def main():
         l_win_num = records[i]['lorder_win']
         print("%d. %s:\n   lorder_win: %.2f%s:\t lorder=%d, farmer=%d, "
               % (i+1, all_moves[i],
-                 100 * float(l_win_num) / (l_win_num + f_win_num), '%',
+                 100 * float(l_win_num)/(l_win_num+f_win_num), '%',
                  l_win_num, f_win_num))
 
     print("Calculated %s node" % nodes_num)
