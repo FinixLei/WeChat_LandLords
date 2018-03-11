@@ -125,3 +125,19 @@ class GenAnyN(object):
                 self.final_result.append(tmp_result[i])
 
         return self.final_result
+
+
+def show_situation(lorder_cards=(), farmer_cards=list(),
+                   move=list(), next_player=''):
+    print("Move is: %s" % format_output_cards(move))
+    print("lorder cards: %s" % format_output_cards(lorder_cards))
+    print("farmer cards: %s" % format_output_cards(farmer_cards))
+    print("Next player: %s" % next_player)
+    print("-" * 20)
+
+
+def check_win(cards, role):
+    if len(cards) == 0:
+        print('%s win!' % role)
+        return True
+    return False

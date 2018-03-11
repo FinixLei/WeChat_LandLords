@@ -1,5 +1,4 @@
 import copy
-import random
 import move_classifier
 import move_gener
 import move_filter
@@ -94,6 +93,7 @@ def get_resp_moves(cards, rival_move):
     return moves
 
 
+# Only for testing UIEngine
 def do_a_move(lorder_cards=[], farmer_cards=[],
               previous_move=[], player='farmer'):
     lc = copy.deepcopy(lorder_cards)

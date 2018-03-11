@@ -1,4 +1,4 @@
-from common import MIN_SINGLE_CARDS, MIN_PAIRS, MIN_TRIPLES
+from utils import MIN_SINGLE_CARDS, MIN_PAIRS, MIN_TRIPLES
 
 
 TYPE_0_PASS = 0

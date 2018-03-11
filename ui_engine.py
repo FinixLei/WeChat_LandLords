@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from six.moves import input
-from common import format_input_cards, format_output_cards, get_rest_cards
+from utils import format_input_cards, format_output_cards, get_rest_cards
 from move_player import get_resp_moves, do_a_move
 
 

@@ -1,5 +1,5 @@
 import copy
-from common import calc_time, GenAnyN, \
+from utils import calc_time, GenAnyN, \
     MIN_SINGLE_CARDS, MIN_PAIRS, MIN_TRIPLES
 
 
