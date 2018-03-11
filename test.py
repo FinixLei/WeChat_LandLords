@@ -239,6 +239,14 @@ def test_filter_type_14_4_4():
     print("Filtered moves = %s" % filtered_moves)
 
 
+def _show_situation(lorder_cards=(), farmer_cards=list(),
+                    move=list(), next_player=''):
+    print("Move is: %s" % move)
+    print("lord cards: %s" % lorder_cards)
+    print("farmer cards: %s" % farmer_cards)
+    print("Next player: %s" % next_player)
+    print("-" * 20)
+
 @print_func_name
 def test_auto_play_moves():
     lorder_cards = format_input_cards([2, 3, 7, 7])
@@ -246,7 +254,7 @@ def test_auto_play_moves():
     player = 'farmer'
 
     print("Initial State: ")
-    print("lord cards: %s" % lorder_cards)
+    print("lorder cards: %s" % lorder_cards)
     print("farmer cards: %s" % farmer_cards)
     print("Current player: %s" % player)
     print("-" * 20)
@@ -258,12 +266,9 @@ def test_auto_play_moves():
     farmer_cards = get_rest_cards(farmer_cards, move)
     previous_move = move
 
-    print("Move is: %s" % move)
-    print("lord cards: %s" % lorder_cards)
-    print("farmer cards: %s" % farmer_cards)
     next_player = 'lorder' if player == 'farmer' else 'farmer'
-    print("Next player: %s" % next_player)
-    print("-" * 20)
+    _show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
+                    move=move, next_player=next_player)
 
     while lorder_cards and farmer_cards:
         player = 'farmer' if player == 'lord' else 'lord'
@@ -287,11 +292,8 @@ def test_auto_play_moves():
         previous_move = move
 
         next_player = 'lorder' if player == 'farmer' else 'farmer'
-        print("Move is: %s" % move)
-        print("lord cards: %s" % lorder_cards)
-        print("farmer cards: %s" % farmer_cards)
-        print("Next player: %s" % next_player)
-        print("-" * 20)
+        _show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
+                        move=move, next_player=next_player)
 
 
 @print_func_name
