@@ -1,5 +1,6 @@
 # coding=utf-8
 
+from six.moves import input
 from common import format_input_cards, format_output_cards, get_rest_cards
 from move_player import get_resp_moves, do_a_move
 
@@ -48,7 +49,7 @@ class UIEngine(object):
 
             # Farmer plays a move
             print("请帮农民出牌:")
-            farmer_move = raw_input("")
+            farmer_move = input("")
             if (farmer_move in ['pass', 'Pass', 'PASS', '不要']) or \
                len(farmer_move.strip()) == 0:
                 farmer_move = []
@@ -58,7 +59,7 @@ class UIEngine(object):
             possible_moves = get_resp_moves(farmer_cards, lorder_move)
             while farmer_move not in possible_moves:
                 print("错误的出牌！请重新帮地主出牌: ")
-                farmer_move = raw_input("")
+                farmer_move = input("")
                 if farmer_move in ['pass', 'Pass', 'PASS']:
                     farmer_move = []
                 else:
