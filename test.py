@@ -242,10 +242,18 @@ def test_filter_type_14_4_4():
 def _show_situation(lorder_cards=(), farmer_cards=list(),
                     move=list(), next_player=''):
     print("Move is: %s" % move)
-    print("lord cards: %s" % lorder_cards)
+    print("lorder cards: %s" % lorder_cards)
     print("farmer cards: %s" % farmer_cards)
     print("Next player: %s" % next_player)
     print("-" * 20)
+
+
+def _check_win(cards, role):
+    if len(cards) == 0:
+        print('%s win!' % role)
+        return True
+    return False
+
 
 @print_func_name
 def test_auto_play_moves():
@@ -271,8 +279,7 @@ def test_auto_play_moves():
                     move=move, next_player=next_player)
 
     while lorder_cards and farmer_cards:
-        player = 'farmer' if player == 'lord' else 'lord'
-
+        player = 'farmer' if player == 'lorder' else 'lorder'
         move = do_a_move(lorder_cards=lorder_cards,
                          farmer_cards=farmer_cards,
                          previous_move=previous_move,
@@ -280,17 +287,14 @@ def test_auto_play_moves():
 
         if player == 'farmer':
             farmer_cards = get_rest_cards(farmer_cards, move)
-            if len(farmer_cards) == 0:
-                print("Farmer Win!")
+            if _check_win(farmer_cards, player):
                 break
         else:
             lorder_cards = get_rest_cards(lorder_cards, move)
-            if len(lorder_cards) == 0:
-                print("LandLord Win!")
+            if _check_win(lorder_cards, player):
                 break
 
         previous_move = move
-
         next_player = 'lorder' if player == 'farmer' else 'farmer'
         _show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
                         move=move, next_player=next_player)
