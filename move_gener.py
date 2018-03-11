@@ -272,7 +272,7 @@ class MovesGener(object):
         
         return result
         
-    @calc_time
+    # @calc_time
     def gen_moves(self):
         moves = list()
         moves.extend(self.gen_type_1_single())
