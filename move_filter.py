@@ -1,6 +1,3 @@
-import copy
-
-
 class MoveFilter(object):
     def _common_handle(self, moves, rival_move):
         new_moves = list()

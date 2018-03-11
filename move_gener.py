@@ -7,13 +7,13 @@ class MovesGener(object):
 
     def __init__(self, cards_list=list()):
         self.cards_list = cards_list
-        self.cards = dict()
+        self.cards_dict = dict()
         
         for i in self.cards_list:
-            if i in self.cards:
-                self.cards[i] += 1
+            if i in self.cards_dict:
+                self.cards_dict[i] += 1
             else:
-                self.cards[i] = 1
+                self.cards_dict[i] = 1
                 
         self.single_card_moves = list()
         self.pair_moves = list()
@@ -21,14 +21,16 @@ class MovesGener(object):
         self.bomb_moves = list()
         self.final_bomb_moves = list()
 
-    '''
-    cards: A list of single cards, each one may represent several same cards.
-    min_serial: The required minimum sequence, e.g. for pairs, it's 3.
-    repeat: 1 means single, 2 means pair, 3 means triple cards.
-    repeat_num: How many sections in the sequence, e.g. for 3,3,3,4,4,4, it is 2.
-                The default value 0 means no limitation 
-    '''
     def _gen_serial_moves(self, cards, min_serial, repeat=1, repeat_num=0):
+        """
+        :param cards: A list of single cards, each may represent several same cards.
+        :param min_serial: The required minimum sequence, e.g. for pairs, it's 3.
+        :param repeat: 1 means single, 2 means pair, 3 means triple cards.
+        :param repeat_num: How many sections in the sequence,
+                            e.g. for 3,3,3,4,4,4, it is 2.
+                            The default value 0 means no limitation
+        :return: moves: serial moves, e.g. sequenced pairs, sequenced 3+1, etc.
+        """
         if repeat_num < min_serial:  # at least repeat_num is min_serial
             repeat_num = 0
 
@@ -88,7 +90,7 @@ class MovesGener(object):
         if self.pair_moves:
             return self.pair_moves
         
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 2:
                 self.pair_moves.append([k, k])
         return self.pair_moves
@@ -97,7 +99,7 @@ class MovesGener(object):
         if self.triple_cards_moves:
             return self.triple_cards_moves
         
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 3:
                 self.triple_cards_moves.append([k, k, k])
         return self.triple_cards_moves
@@ -106,7 +108,7 @@ class MovesGener(object):
         if self.bomb_moves:
             return self.bomb_moves
         
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 4:
                 self.bomb_moves.append([k, k, k, k])
         return self.bomb_moves
@@ -120,7 +122,7 @@ class MovesGener(object):
         
     def gen_type_6_3_1(self):
         triple_cards = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 3:
                 triple_cards.append(k)
                 
@@ -135,7 +137,7 @@ class MovesGener(object):
     def gen_type_7_3_2(self):
         triple_cards = list()
         two_more_cards = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 3:
                 triple_cards.append(k)
             if v >= 2:
@@ -156,7 +158,7 @@ class MovesGener(object):
 
     def gen_type_9_serial_pair(self, repeat_num=0):
         single_pairs = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 2:
                 single_pairs.append(k)
                 
@@ -167,7 +169,7 @@ class MovesGener(object):
         
     def gen_type_10_serial_triple(self, repeat_num=0):
         single_triples = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 3:
                 single_triples.append(k)
                 
@@ -198,7 +200,7 @@ class MovesGener(object):
     def gen_type_12_serial_3_2(self, repeat_num=0):
         serial_3_moves = self.gen_type_10_serial_triple(repeat_num=repeat_num)
         serial_3_2_moves = list()
-        pair_set = sorted([k for k, v in self.cards.items() if v >= 2])
+        pair_set = sorted([k for k, v in self.cards_dict.items() if v >= 2])
 
         for s3 in serial_3_moves:
             s3_set = set(s3)
@@ -216,7 +218,7 @@ class MovesGener(object):
 
     def gen_type_13_4_2(self):
         four_cards = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 4:
                 four_cards.append(k)
         
@@ -239,12 +241,12 @@ class MovesGener(object):
     
     def gen_type_14_4_4(self):
         four_cards = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v >= 4:
                 four_cards.append(k)
         
         two_more_cards = list()
-        for k, v in self.cards.items():
+        for k, v in self.cards_dict.items():
             if v in [2, 3]:
                 two_more_cards.append(k)
         
