@@ -2,8 +2,11 @@ from utils import format_input_cards, format_output_cards, \
     get_rest_cards, show_situation, calc_time
 from move_gener import MovesGener
 from move_player import get_resp_moves
+from move_classifier import MoveClassifier
 
 nodes_num = 0
+m_class = MoveClassifier()
+
 
 def show_initial_state(lorder_cards=list(), farmer_cards=list(), player='lorder'):
     print("Initial State: ")
@@ -16,23 +19,27 @@ def show_initial_state(lorder_cards=list(), farmer_cards=list(), player='lorder'
 def mc_search(lorder_cards=list(), farmer_cards=list(),
               current_move=list(), next_player='',
               record=dict()):
-    # show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
-    #                move=current_move, next_player=next_player)
+    show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
+                   move=current_move, next_player=next_player)
 
     global nodes_num
+    global m_class
 
-    if next_player == 'farmer' and len(lorder_cards) == 0:
-        record['lorder_win'] += 1
-        nodes_num += 1
-        if nodes_num % 10000 == 0:
-            print("Calculated %s nodes" % nodes_num)
-        return
-    elif next_player == 'lorder' and len(farmer_cards) == 0:
-        record['farmer_win'] += 1
-        nodes_num += 1
-        if nodes_num % 10000 == 0:
-            print("Calculated %s nodes" % nodes_num)
-        return
+    if next_player == 'farmer':
+        if len(lorder_cards) == 0:
+            record['lorder_win'] += 1
+            nodes_num += 1
+            if nodes_num % 10000 == 0:
+                print("Calculated %s nodes" % nodes_num)
+            return
+
+    elif next_player == 'lorder':
+        if len(farmer_cards) == 0:
+            record['farmer_win'] += 1
+            nodes_num += 1
+            if nodes_num % 10000 == 0:
+                print("Calculated %s nodes" % nodes_num)
+            return
 
     if next_player == 'farmer':
         all_moves = get_resp_moves(farmer_cards, current_move)
@@ -53,6 +60,7 @@ def mc_search(lorder_cards=list(), farmer_cards=list(),
                       current_move=lorder_move,
                       next_player='farmer',
                       record=record)
+
 
 @calc_time
 def start_mc(lorder_cards=list(), farmer_cards=list()):
@@ -80,15 +88,24 @@ def start_mc(lorder_cards=list(), farmer_cards=list()):
 
 
 def main():
-    lorder_cards = ['A', 'A', 'K', 'J', 9, 9, 8, 6, 4]
-    farmer_cards = ['2', 'A', 'J', 10, 10, 7, 7, 6, 5, 5, 4, 3, 3]
+    global nodes_num
+
+    # lorder_cards = ['A', 'A', 'K', 'J', 9, 9, 8, 6, 4]
+    # farmer_cards = ['2', 'A', 'J', 10, 10, 7, 7, 6, 5, 5, 4, 3, 3]
+
+    lorder_cards = [7, 6, 6, 6]
+    farmer_cards = ['Z', 'A', 'A', 'A', 3]
     all_moves, records = start_mc(lorder_cards=lorder_cards, farmer_cards=farmer_cards)
-    print(len(all_moves))
-    print(len(records))
 
     for i in range(len(all_moves)):
-        print("%d. %s: farmer win=%d, lorder win=%d"
-              % (i, all_moves[i], records[i]['farmer_win'], records[i]['lorder_win']))
+        f_win_num = records[i]['farmer_win']
+        l_win_num = records[i]['lorder_win']
+        print("%d. %s:\n   lorder_win: %.2f%s:\t lorder=%d, farmer=%d, "
+              % (i+1, all_moves[i],
+                 100 * float(l_win_num) / (l_win_num + f_win_num), '%',
+                 l_win_num, f_win_num))
+
+    print("Calculated %s node" % nodes_num)
 
 
 main()
