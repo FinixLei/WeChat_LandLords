@@ -1,12 +1,12 @@
 欢乐斗地主之残局解答器
 
-**Since the author is busy on work and learning recently, this project may be suspended for some time or be updated infrequently.**   
-**因为工作和学习繁忙，作者将暂停或以较低频率更新本项目。**  
--- Finix 2018.03.05
+**基本的蒙特卡洛搜索已经完成，但效率较低，还有很大的优化空间。**
+**因为工作和学习繁忙，作者将暂停或以较低频率更新本项目。**
+                          -- Finix 2018.03.11
 
 --------------------------------------------------------------------------
 # TODO:  
-1. 完善蒙特卡洛树搜索(mc_engine) （80%）
+1. 进一步剪枝优化蒙特卡洛搜索(mc_engine)
 
 2. 多线程/多进程实现mc_engine（虽然Python不支持真正的多线程，但可以试一下）
 
@@ -27,3 +27,6 @@
 
 5. get_resp_moves(cards, rival_move)  
    Give all the possible moves per cards on hand and the rival's move
+
+6. Basic Monte Carlo search
+   Basic function is done.

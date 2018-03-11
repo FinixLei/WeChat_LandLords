@@ -19,8 +19,8 @@ def show_initial_state(lorder_cards=list(), farmer_cards=list(), player='lorder'
 def mc_search(lorder_cards=list(), farmer_cards=list(),
               current_move=list(), next_player='',
               record=dict()):
-    show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
-                   move=current_move, next_player=next_player)
+    # show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
+    #                move=current_move, next_player=next_player)
 
     global nodes_num
     global m_class
@@ -93,8 +93,8 @@ def main():
     # lorder_cards = ['A', 'A', 'K', 'J', 9, 9, 8, 6, 4]
     # farmer_cards = ['2', 'A', 'J', 10, 10, 7, 7, 6, 5, 5, 4, 3, 3]
 
-    lorder_cards = [7, 6, 6, 6]
-    farmer_cards = ['Z', 'A', 'A', 'A', 3]
+    lorder_cards = [3, 4, 5, 6, 7]
+    farmer_cards = [4, 5, 6, 7, 8]
     all_moves, records = start_mc(lorder_cards=lorder_cards, farmer_cards=farmer_cards)
 
     for i in range(len(all_moves)):
