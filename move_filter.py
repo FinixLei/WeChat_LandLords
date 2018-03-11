@@ -2,33 +2,24 @@ import copy
 
 
 class MoveFilter(object):
-    def filter_type_1_single(self, moves, rival_move):
+    def _common_handle(self, moves, rival_move):
         new_moves = list()
         for move in moves:
             if move[0] > rival_move[0]:
                 new_moves.append(move)
         return new_moves
+
+    def filter_type_1_single(self, moves, rival_move):
+        return self._common_handle(moves, rival_move)
 
     def filter_type_2_pair(self, moves, rival_move):
-        new_moves = list()
-        for move in moves:
-            if move[0] > rival_move[0]:
-                new_moves.append(move)
-        return new_moves
+        return self._common_handle(moves, rival_move)
 
     def filter_type_3_triple(self, moves, rival_move):
-        new_moves = list()
-        for move in moves:
-            if move[0] > rival_move[0]:
-                new_moves.append(move)
-        return new_moves
+        return self._common_handle(moves, rival_move)
 
     def filter_type_4_bomb(self, moves, rival_move):
-        new_moves = list()
-        for move in moves:
-            if move[0] > rival_move[0]:
-                new_moves.append(move)
-        return new_moves
+        return self._common_handle(moves, rival_move)
 
     # No need to filter for type_5_king_bomb
 
@@ -83,25 +74,13 @@ class MoveFilter(object):
         return new_moves
 
     def filter_type_8_serial_single(self, moves, rival_move):
-        new_moves = list()
-        for move in moves:
-            if move[0] > rival_move[0]:
-                new_moves.append(move)
-        return new_moves
+        return self._common_handle(moves, rival_move)
 
     def filter_type_9_serial_pair(self, moves, rival_move):
-        new_moves = list()
-        for move in moves:
-            if move[0] > rival_move[0]:
-                new_moves.append(move)
-        return new_moves
+        return self._common_handle(moves, rival_move)
 
     def filter_type_10_serial_triple(self, moves, rival_move):
-        new_moves = list()
-        for move in moves:
-            if move[0] > rival_move[0]:
-                new_moves.append(move)
-        return new_moves
+        return self._common_handle(moves, rival_move)
 
     def filter_type_11_serial_3_1(self, moves, rival_move):
         rival_triple_list = list()

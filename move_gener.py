@@ -82,7 +82,7 @@ class MovesGener(object):
         if len(self.cards_list) > 0:
             for i in set(self.cards_list):
                 self.single_card_moves.append([i])
-        return sorted(self.single_card_moves)
+        return self.single_card_moves
         
     def gen_type_2_pair(self):
         if self.pair_moves:
@@ -91,7 +91,7 @@ class MovesGener(object):
         for k, v in self.cards.items():
             if v >= 2:
                 self.pair_moves.append([k, k])
-        return sorted(self.pair_moves)
+        return self.pair_moves
         
     def gen_type_3_triple(self):
         if self.triple_cards_moves:
@@ -100,7 +100,7 @@ class MovesGener(object):
         for k, v in self.cards.items():
             if v >= 3:
                 self.triple_cards_moves.append([k, k, k])
-        return sorted(self.triple_cards_moves)
+        return self.triple_cards_moves
         
     def gen_type_4_bomb(self):
         if self.bomb_moves:
@@ -130,7 +130,7 @@ class MovesGener(object):
             for i in single_cards:
                 if t != i:
                     result.append([t, t, t, i])
-        return sorted(result)
+        return result
         
     def gen_type_7_3_2(self):
         triple_cards = list()
@@ -146,28 +146,24 @@ class MovesGener(object):
             for i in two_more_cards:
                 if t != i:
                     result.append([t, t, t, i, i])
-        return sorted(result)
+        return result
         
     def gen_type_8_serial_single(self, repeat_num=0):
-        return sorted(
-            self._gen_serial_moves(self.cards_list,
+        return self._gen_serial_moves(self.cards_list,
                                       MIN_SINGLE_CARDS,
                                       repeat=1,
                                       repeat_num=repeat_num)
-        )
-        
+
     def gen_type_9_serial_pair(self, repeat_num=0):
         single_pairs = list()
         for k, v in self.cards.items():
             if v >= 2:
                 single_pairs.append(k)
                 
-        return sorted(
-            self._gen_serial_moves(single_pairs,
+        return self._gen_serial_moves(single_pairs,
                                       MIN_PAIRS,
                                       repeat=2,
                                       repeat_num=repeat_num)
-        )
         
     def gen_type_10_serial_triple(self, repeat_num=0):
         single_triples = list()
@@ -175,12 +171,10 @@ class MovesGener(object):
             if v >= 3:
                 single_triples.append(k)
                 
-        return sorted(
-            self._gen_serial_moves(single_triples,
+        return self._gen_serial_moves(single_triples,
                                       MIN_TRIPLES,
                                       repeat=3,
                                       repeat_num=repeat_num)
-        )
 
     def gen_type_11_serial_3_1(self, repeat_num=0):
         serial_3_moves = self.gen_type_10_serial_triple(repeat_num=repeat_num)
@@ -199,7 +193,7 @@ class MovesGener(object):
                 move = s3 + i  # like [3,3,3,4,4,4] + [5,6]
                 serial_3_1_moves.append(move)
 
-        return sorted(serial_3_1_moves)
+        return serial_3_1_moves
 
     def gen_type_12_serial_3_2(self, repeat_num=0):
         serial_3_moves = self.gen_type_10_serial_triple(repeat_num=repeat_num)
@@ -218,7 +212,7 @@ class MovesGener(object):
                 move = sorted(s3 + i*2)  # like [3,3,3, 4,4,4] + [7,8]*2
                 serial_3_2_moves.append(move)
 
-        return sorted(serial_3_2_moves)
+        return serial_3_2_moves
 
     def gen_type_13_4_2(self):
         four_cards = list()
@@ -241,7 +235,7 @@ class MovesGener(object):
                     j += 1
                 i += 1
         
-        return sorted(result)
+        return result
     
     def gen_type_14_4_4(self):
         four_cards = list()
@@ -274,7 +268,7 @@ class MovesGener(object):
                     j += 1
                 i += 1
         
-        return sorted(result)
+        return result
         
     @calc_time
     def gen_moves(self):

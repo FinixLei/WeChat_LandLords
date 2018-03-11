@@ -5,8 +5,8 @@ from move_player import get_resp_moves, do_a_move
 
 
 class UIEngine(object):
-
-    def declare_commands(self):
+    @staticmethod
+    def declare():
         print("可输入的命令及大小王牌型如下:")
         print("pass - 过，不出牌")
         print("Y - 小王")
