@@ -1,4 +1,6 @@
 import multiprocessing
+import os
+import re
 
 from utils import format_input_cards, format_output_cards, \
     get_rest_cards, show_situation, calc_time
@@ -11,39 +13,57 @@ mc_records = list()
 m_class = MoveClassifier()
 
 
-def dump_mc_record(record):
+def clear_env():
+    for file in os.listdir("."):
+        if file.startswith("output_"):
+            os.remove("./" + file)
+
+
+def dump_mc_records(index, record):
     move = record.get('move', '')
     farmer_win = record.get('farmer_win', 0)
     lorder_win = record.get('lorder_win', 0)
     lorder_win_rate = float(lorder_win) / (lorder_win+farmer_win) if lorder_win else 0
-    print('move: %s\n  lorder win rate: %.2f%s, lorder: %s, farmer: %s'
-          % (move, 100*lorder_win_rate, '%', lorder_win, farmer_win))
+    out_line = 'move=%s; lorder_win_rate=%.2f%s; lorder=%s; farmer=%s' \
+               % (move, 100 * lorder_win_rate, '%', lorder_win, farmer_win)
+
+    output_file = "./output_%s" % index
+    with open(output_file, 'w') as OUT_FILE:
+        OUT_FILE.write(out_line)
+
+    results = list()
+    for file in os.listdir('.'):
+        if file.startswith('output_'):
+            with open(file, 'r') as in_file:
+                for line in in_file.readlines():
+                    results.append(line)
+                    break
+
+    regex = re.compile(r'.+lorder_win_rate=(.+)%.+')
+    result_dict = dict()
+    for result in results:
+        items = regex.search(result)
+        if items:
+            rate = items.group(1)
+            result_dict[result] = float(rate)
+
+    sorted_results = sorted(result_dict.items(), key=lambda x: x[1], reverse=True)
+    for result in sorted_results:
+        print(result[0])
+
+    print("-" * 50)
 
 
-def show_node_info(record):
-    global nodes_num
-    if nodes_num % 1e4 == 0:
-        dump_mc_record(record)
-
-
-def show_initial_state(lorder_cards=list(), farmer_cards=list(), player='lorder'):
-    print("Initial State: ")
-    print("lorder cards: %s" % format_output_cards(lorder_cards))
-    print("farmer cards: %s" % format_output_cards(farmer_cards))
-    print("Current player: %s" % player)
-    print("-" * 20)
-
-
-def process_mc_search(record, lorder_cards, farmer_cards,
+def process_mc_search(index, record, lorder_cards, farmer_cards,
                       current_move, next_player):
-    mc_search(record, lorder_cards, farmer_cards,
+    mc_search(index, record, lorder_cards, farmer_cards,
               current_move, next_player)
-    print("------------- Start --------------")
-    dump_mc_record(record)
+    print("------------- Start: Move No.%d --------------" % index)
+    dump_mc_records(index, record)
     print("------------- End --------------")
 
 
-def mc_search(record, lorder_cards, farmer_cards,
+def mc_search(index, record, lorder_cards, farmer_cards,
               current_move, next_player):
     # show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
     #                move=current_move, next_player=next_player)
@@ -56,14 +76,16 @@ def mc_search(record, lorder_cards, farmer_cards,
         if len(lorder_cards) == 0:
             record['lorder_win'] += 1
             nodes_num += 1
-            show_node_info(record)
+            if nodes_num % 1e5 == 0:
+                dump_mc_records(index, record)
             return
 
     elif next_player == 'lorder':
         if len(farmer_cards) == 0:
             record['farmer_win'] += 1
             nodes_num += 1
-            show_node_info(record)
+            if nodes_num % 1e5 == 0:
+                dump_mc_records(index, record)
             return
 
     if next_player == 'farmer':
@@ -72,7 +94,7 @@ def mc_search(record, lorder_cards, farmer_cards,
         all_moves = sorted(all_moves, key=lambda x: len(x), reverse=True)
         for farmer_move in all_moves:
             fc = get_rest_cards(farmer_cards, farmer_move)
-            mc_search(record,
+            mc_search(index, record,
                       lorder_cards,
                       fc,
                       farmer_move,
@@ -84,21 +106,23 @@ def mc_search(record, lorder_cards, farmer_cards,
         all_moves = sorted(all_moves, key=lambda x: len(x), reverse=True)
         for lorder_move in all_moves:
             lc = get_rest_cards(lorder_cards, lorder_move)
-            mc_search(record,
+            mc_search(index, record,
                       lc,
                       farmer_cards,
                       lorder_move,
                       'farmer')
 
 
-def start_mc(lorder_cards=list(), farmer_cards=list()):
-    process_pool = []
+@calc_time
+def start_mc(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
+    clear_env()
 
+    process_pool = []
     lorder_cards = format_input_cards(lorder_cards)
     farmer_cards = format_input_cards(farmer_cards)
+    farmer_move = format_input_cards(farmer_move)
 
-    mg = MovesGener(format_input_cards(lorder_cards))
-    all_lorder_moves = mg.gen_moves()
+    all_lorder_moves = get_resp_moves(format_input_cards(lorder_cards), farmer_move)
     # a kind of optimization
     all_lorder_moves = sorted(all_lorder_moves, key=lambda x: len(x), reverse=True)
     print("All Moves: %s" % all_lorder_moves)
@@ -113,7 +137,7 @@ def start_mc(lorder_cards=list(), farmer_cards=list()):
 
         lc = get_rest_cards(lorder_cards, move)
         p = multiprocessing.Process(target=process_mc_search,
-                                    args=(record, lc, farmer_cards, move, 'farmer'))
+                                    args=(count, record, lc, farmer_cards, move, 'farmer'))
         process_pool.append(p)
         count += 1
 
