@@ -37,9 +37,10 @@ def show_initial_state(lorder_cards=list(), farmer_cards=list(), player='lorder'
 
 def mc_search(lorder_cards=list(), farmer_cards=list(),
               current_move=list(), next_player='',
-              record=dict()):
-    # show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
-    #                move=current_move, next_player=next_player)
+              record=dict(), debug=False):
+    if debug:
+        show_situation(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
+                       move=current_move, next_player=next_player)
 
     global nodes_num
     global m_class
@@ -68,7 +69,8 @@ def mc_search(lorder_cards=list(), farmer_cards=list(),
                       farmer_cards=fc,
                       current_move=farmer_move,
                       next_player='lorder',
-                      record=record)
+                      record=record,
+                      debug=debug)
 
     else:  # next_player is 'lorder'
         all_moves = get_resp_moves(lorder_cards, current_move)
@@ -80,18 +82,19 @@ def mc_search(lorder_cards=list(), farmer_cards=list(),
                       farmer_cards=farmer_cards,
                       current_move=lorder_move,
                       next_player='farmer',
-                      record=record)
+                      record=record,
+                      debug=debug)
 
 
 @calc_time
-def start_mc(lorder_cards=list(), farmer_cards=list()):
+def start_mc(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
     global mc_records
 
     lorder_cards = format_input_cards(lorder_cards)
     farmer_cards = format_input_cards(farmer_cards)
+    farmer_move = format_input_cards(farmer_move)
 
-    mg = MovesGener(format_input_cards(lorder_cards))
-    all_lorder_moves = mg.gen_moves()
+    all_lorder_moves = get_resp_moves(format_input_cards(lorder_cards), farmer_move)
     # a kind of optimization
     all_lorder_moves = sorted(all_lorder_moves, key=lambda x: len(x), reverse=True)
 
@@ -103,11 +106,13 @@ def start_mc(lorder_cards=list(), farmer_cards=list()):
     count = 0
     for move in all_lorder_moves:
         lc = get_rest_cards(lorder_cards, move)
+        debug = False
         mc_search(lorder_cards=lc,
                   farmer_cards=farmer_cards,
                   current_move=move,
                   next_player='farmer',
-                  record=mc_records[count])
+                  record=mc_records[count],
+                  debug=debug)
         count += 1
 
     return all_lorder_moves, mc_records, nodes_num
