@@ -1,7 +1,8 @@
 欢乐斗地主之残局解答器
 
-**基本的蒙特卡洛搜索已经完成，并辅以多进程（Python不真正支持多线程）搜索，目前基本功能已经完成。**
-**使用方法是：直接编辑test_mc_engine_mp.py, 并运行它： python test_mc_engine_mp.py**
+**蒙特卡洛搜索已经完成，并辅以多进程（Python不真正支持多线程）搜索，目前基本功能已经完成。多进程确实加速了几倍的速度。**
+**使用方法：直接编辑test_mc_engine_mp.py, 并运行它： python test_mc_engine_mp.py**
+
 **ui_engine并没有实际的效用，不必使用这个文件。**
 
 在test_mc_engine_mp.py中，给出了3个例子，计算机虽然模拟完了所有对局，但是得出了错误的结论。
