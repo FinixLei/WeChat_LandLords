@@ -2,9 +2,7 @@ import multiprocessing
 import os
 import re
 
-from utils import format_input_cards, format_output_cards, \
-    get_rest_cards, show_situation, calc_time
-from move_gener import MovesGener
+from utils import format_input_cards, get_rest_cards, show_situation, calc_time
 from move_player import get_resp_moves
 from move_classifier import MoveClassifier
 
