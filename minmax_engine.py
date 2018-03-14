@@ -7,6 +7,7 @@ from move_classifier import MoveClassifier
 MAX_SCORE = 100
 MIN_SCORE = 0
 
+nodes_num = 0
 mc_records = list()
 m_class = MoveClassifier()
 
@@ -20,13 +21,28 @@ def process_search(result_dict, lorder_cards, farmer_cards, current_move, next_p
 
 def minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player):
     global m_class
+    global nodes_num
+
+    def _get_best_move():
+        best = False
+        for _, score in result_dict.items():
+            if score == MAX_SCORE:
+                best = True
+                break
+        return best
 
     if next_player == 'farmer':
         if len(lorder_cards) == 0:
+            # If any other process gets the best move, exit myself
+            if nodes_num % 1e4 == 0 and _get_best_move():
+                exit(0)
             return MAX_SCORE  # lorder win, return MAX_SCORE
 
     elif next_player == 'lorder':
         if len(farmer_cards) == 0:
+            # If any other process gets the best move, exit myself
+            if nodes_num % 1e4 == 0 and _get_best_move():
+                exit(0)
             return MIN_SCORE  # farmer win, return MIN_SCORE
 
     if next_player == 'farmer':  # the parameter next_player is current player
