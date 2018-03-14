@@ -16,7 +16,7 @@ class UIEngine(object):
         print("-" * 30)
 
     @staticmethod
-    def run(lorder_cards=[], farmer_cards=[]):
+    def run(lorder_cards=[], farmer_cards=[], farmer_move=[]):
         lorder_cards = format_input_cards(lorder_cards)
         farmer_cards = format_input_cards(farmer_cards)
 
@@ -27,7 +27,9 @@ class UIEngine(object):
         print("-" * 20)
 
         # LandLorder do the first move
-        lorder_move = start_engine(lorder_cards=lorder_cards, farmer_cards=farmer_cards)
+        lorder_move = start_engine(lorder_cards=lorder_cards,
+                                   farmer_cards=farmer_cards,
+                                   farmer_move=farmer_move)
 
         if lorder_move is None:
             print("地主必败！")
