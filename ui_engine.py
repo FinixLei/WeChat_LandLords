@@ -60,6 +60,8 @@ class UIEngine(object):
                 farmer_move = format_input_cards(farmer_move.split())
 
             possible_moves = get_resp_moves(farmer_cards, lorder_move)
+            # must sort, for 'not in' check.
+            possible_moves = [sorted(move) for move in possible_moves]
             while farmer_move not in possible_moves:
                 print("错误的出牌！请重新帮农民出牌: ")
                 farmer_move = input("")
@@ -68,6 +70,8 @@ class UIEngine(object):
                 else:
                     farmer_move = format_input_cards(farmer_move.split())
                 possible_moves = get_resp_moves(farmer_cards, lorder_move)
+                # must sort, for 'not in' check.
+                possible_moves = [sorted(move) for move in possible_moves]
 
             farmer_cards = get_rest_cards(farmer_cards, farmer_move)
             if len(farmer_cards) == 0:
