@@ -11,12 +11,14 @@ mc_records = list()
 m_class = MoveClassifier()
 
 
-def process_search(lorder_cards, farmer_cards, current_move, next_player):
-    score = minmax_search(lorder_cards, farmer_cards, current_move, next_player)
-    print("Move: %s; Score: %d" % (current_move, score))
+def process_search(result_dict, lorder_cards, farmer_cards, current_move, next_player):
+    score = minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player)
+    str_move = "%s" % current_move
+    print("Move: %s; Score: %d" % (str_move, score))
+    result_dict[str_move] = score
 
 
-def minmax_search(lorder_cards, farmer_cards, current_move, next_player):
+def minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player):
     global m_class
 
     if next_player == 'farmer':
@@ -34,7 +36,8 @@ def minmax_search(lorder_cards, farmer_cards, current_move, next_player):
         all_moves = sorted(all_moves, key=lambda x: len(x), reverse=True)
         for farmer_move in all_moves:
             fc = get_rest_cards(farmer_cards, farmer_move)
-            score = minmax_search(lorder_cards,
+            score = minmax_search(result_dict,
+                                  lorder_cards,
                                   fc,
                                   farmer_move,
                                   'lorder')
@@ -51,7 +54,8 @@ def minmax_search(lorder_cards, farmer_cards, current_move, next_player):
         all_moves = sorted(all_moves, key=lambda x: len(x), reverse=True)
         for lorder_move in all_moves:
             lc = get_rest_cards(lorder_cards, lorder_move)
-            score = minmax_search(lc,
+            score = minmax_search(result_dict,
+                                  lc,
                                   farmer_cards,
                                   lorder_move,
                                   'farmer')
@@ -64,6 +68,12 @@ def minmax_search(lorder_cards, farmer_cards, current_move, next_player):
 
 @calc_time
 def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
+    """
+    :return: the best move which can win, otherwise None
+    """
+    manager = multiprocessing.Manager()
+    result_dict = manager.dict()
+
     process_pool = []
     lorder_cards = format_input_cards(lorder_cards)
     farmer_cards = format_input_cards(farmer_cards)
@@ -82,10 +92,15 @@ def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
 
         lc = get_rest_cards(lorder_cards, move)
         p = multiprocessing.Process(target=process_search,
-                                    args=(lc, farmer_cards, move, 'farmer'))
+                                    args=(result_dict,
+                                          lc, farmer_cards, move, 'farmer'))
         process_pool.append(p)
 
     for p in process_pool:
         p.start()
     for p in process_pool:
         p.join()
+
+    for move, score in result_dict.items():
+        if score == MAX_SCORE:
+            return move
