@@ -43,8 +43,8 @@ class UIEngine(object):
         while True:
             # Print the Situation after Lorder play a move
             str_lorder_move = format_output_cards(lorder_move) if lorder_move else 'Pass!'
-            print("地主出牌: %s" % str_lorder_move)
             print("地主家的牌: %s" % format_output_cards(lorder_cards))
+            print("地主已出牌: %s" % str_lorder_move)
             print("农民家的牌: %s" % format_output_cards(farmer_cards))
             print("-" * 20)
 
@@ -74,9 +74,9 @@ class UIEngine(object):
                 return
 
             str_farmer_move = format_output_cards(farmer_move) if farmer_move else 'Pass!'
-            print("农民出牌: %s" % str_farmer_move)
             print("地主家的牌: %s" % format_output_cards(lorder_cards))
             print("农民家的牌: %s" % format_output_cards(farmer_cards))
+            print("农民已出牌: %s" % str_farmer_move)
             print("-" * 20)
 
             # LandLorder plays a move
