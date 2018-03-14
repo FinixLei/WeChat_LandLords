@@ -45,7 +45,7 @@ def calc_time(fn):
         begin = time.time()
         result = fn(*args, **kw)
         end = time.time()
-        print("Time cost of %s: %s" % (fn.__name__, end - begin))
+        print("Calc Time: %.2f seconds" % (end-begin))
         return result
     return wrapper
 

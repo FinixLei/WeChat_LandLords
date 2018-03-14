@@ -2,7 +2,8 @@
 
 from six.moves import input
 from utils import format_input_cards, format_output_cards, get_rest_cards
-from move_player import get_resp_moves, do_a_move
+from move_player import get_resp_moves
+from minmax_engine import start_engine
 
 
 class UIEngine(object):
@@ -18,7 +19,6 @@ class UIEngine(object):
     def run(lorder_cards=[], farmer_cards=[]):
         lorder_cards = format_input_cards(lorder_cards)
         farmer_cards = format_input_cards(farmer_cards)
-        player = 'lorder'  # LandLorder is the first player
 
         print("初始状态: ")
         print("地主家的牌: %s" % format_output_cards(lorder_cards))
@@ -27,10 +27,11 @@ class UIEngine(object):
         print("-" * 20)
 
         # LandLorder do the first move
-        lorder_move = do_a_move(lorder_cards=lorder_cards,
-                                farmer_cards=farmer_cards,
-                                previous_move=[],
-                                player=player)
+        lorder_move = start_engine(lorder_cards=lorder_cards, farmer_cards=farmer_cards)
+
+        if lorder_move is None:
+            print("地主必败！")
+            return
 
         lorder_cards = get_rest_cards(lorder_cards, lorder_move)
         if len(lorder_cards) == 0:
@@ -58,7 +59,7 @@ class UIEngine(object):
 
             possible_moves = get_resp_moves(farmer_cards, lorder_move)
             while farmer_move not in possible_moves:
-                print("错误的出牌！请重新帮地主出牌: ")
+                print("错误的出牌！请重新帮农民出牌: ")
                 farmer_move = input("")
                 if farmer_move in ['pass', 'Pass', 'PASS']:
                     farmer_move = []
@@ -79,10 +80,12 @@ class UIEngine(object):
             print("-" * 20)
 
             # LandLorder plays a move
-            lorder_move = do_a_move(lorder_cards=lorder_cards,
-                                    farmer_cards=farmer_cards,
-                                    previous_move=farmer_move,
-                                    player="lorder")
+            lorder_move = start_engine(lorder_cards=lorder_cards, farmer_cards=farmer_cards,
+                                       farmer_move=farmer_move)
+
+            if lorder_move is None:
+                print("地主必败！")
+                return
 
             lorder_cards = get_rest_cards(lorder_cards, lorder_move)
             if len(lorder_cards) == 0:

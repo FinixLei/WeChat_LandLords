@@ -8,10 +8,9 @@
 
 最终的solution还是使用了Min-Max引擎。
 
---------------------------------------------------------------------------
+使用方法：
 
-TODO:
-进一步完善UIEngine，更好的服务玩家。
+    python solve_puzzle.py
 
 --------------------------------------------------------------------------
 # Done
@@ -19,8 +18,7 @@ TODO:
 1. Test Framework  
    See test.py
 
-2. UIEngine  
-   The draft is done.
+2. UIEngine
 
 3. MoveGener (Move Generator)  
    Generate all the 14 types of moves.

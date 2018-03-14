@@ -1,6 +1,6 @@
 import multiprocessing
 
-from utils import format_input_cards, get_rest_cards, calc_time
+from utils import format_input_cards, format_output_cards, get_rest_cards, calc_time
 from move_player import get_resp_moves
 from move_classifier import MoveClassifier
 
@@ -12,11 +12,11 @@ mc_records = list()
 m_class = MoveClassifier()
 
 
-def process_search(result_dict, lorder_cards, farmer_cards, current_move, next_player):
+def process_search(index, result_dict,
+                   lorder_cards, farmer_cards, current_move, next_player):
     score = minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player)
-    str_move = "%s" % current_move
-    print("Move: %s; Score: %d" % (str_move, score))
-    result_dict[str_move] = score
+    print("Move: %s; Score: %d" % (current_move, score))
+    result_dict[index] = {'move': current_move, 'score': score}
 
 
 def minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player):
@@ -25,8 +25,8 @@ def minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_pl
 
     def _get_best_move():
         best = False
-        for _, score in result_dict.items():
-            if score == MAX_SCORE:
+        for _, item in result_dict.items():
+            if item['score'] == MAX_SCORE:
                 best = True
                 break
         return best
@@ -98,8 +98,9 @@ def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
     all_lorder_moves = get_resp_moves(format_input_cards(lorder_cards), farmer_move)
     # a kind of optimization
     all_lorder_moves = sorted(all_lorder_moves, key=lambda x: len(x), reverse=True)
-    print("All Moves: %s" % all_lorder_moves)
+    # print("All Moves: %s" % all_lorder_moves)
 
+    count = 0
     for move in all_lorder_moves:
         record = {'move': move,
                   'farmer_win': 0,
@@ -108,15 +109,16 @@ def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
 
         lc = get_rest_cards(lorder_cards, move)
         p = multiprocessing.Process(target=process_search,
-                                    args=(result_dict,
+                                    args=(count, result_dict,
                                           lc, farmer_cards, move, 'farmer'))
         process_pool.append(p)
+        count += 1
 
     for p in process_pool:
         p.start()
     for p in process_pool:
         p.join()
 
-    for move, score in result_dict.items():
-        if score == MAX_SCORE:
-            return move
+    for _, item in result_dict.items():
+        if item['score'] == MAX_SCORE:
+            return item['move']

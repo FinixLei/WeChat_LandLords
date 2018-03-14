@@ -1,7 +1,6 @@
 import move_classifier
 from utils import format_input_cards, GenAnyN, print_func_name
 from move_gener import MovesGener
-from ui_engine import UIEngine
 from move_player import get_resp_moves
 from move_filter import MoveFilter
 
@@ -238,13 +237,6 @@ def test_filter_type_14_4_4():
     print("Filtered moves = %s" % filtered_moves)
 
 
-@print_func_name
-def test_ui_engine():
-    UIEngine.declare()
-    UIEngine.run(farmer_cards=[2, 'A', 'J', 10, 10, 7, 7, 6, 5, 5, 4, 3, 3],
-                 lorder_cards=['A', 'A', 'K', 'J', 9, 9, 8, 6, 4])
-
-
 def main():
     # Test MoveGener
     test_MoveGener()
@@ -271,9 +263,6 @@ def main():
     # Test common
     test_GenAnyN()
     test_get_resp_moves()
-
-    # Test UIEngine
-    test_ui_engine()
 
 
 main()
