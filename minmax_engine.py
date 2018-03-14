@@ -15,7 +15,7 @@ m_class = MoveClassifier()
 def process_search(index, result_dict,
                    lorder_cards, farmer_cards, current_move, next_player):
     score = minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player)
-    print("Move: %s; Score: %d" % (current_move, score))
+    print("Move: %s; Score: %d" % (format_output_cards(current_move), score))
     result_dict[index] = {'move': current_move, 'score': score}
 
 
@@ -98,7 +98,8 @@ def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
     all_lorder_moves = get_resp_moves(format_input_cards(lorder_cards), farmer_move)
     # a kind of optimization
     all_lorder_moves = sorted(all_lorder_moves, key=lambda x: len(x), reverse=True)
-    # print("All Moves: %s" % all_lorder_moves)
+    formatted_all_lorder_moves = [format_output_cards(move) for move in all_lorder_moves]
+    print("All Moves: %s" % formatted_all_lorder_moves)
 
     count = 0
     for move in all_lorder_moves:
