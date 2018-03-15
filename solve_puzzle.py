@@ -1,3 +1,6 @@
+# coding=utf-8
+
+
 from ui_engine import UIEngine
 
 
