@@ -18,13 +18,13 @@ class UIEngine(object):
         UIEngine.declare()
 
         if not lorder_cards and not farmer_cards:
-            print("请输入地主的牌: ")
+            print("请输入地主的牌(以空格间隔): ")
             lorder_cards = input().split()
             while not validate_cards(lorder_cards):
                 print("地主的牌输入错误，请重新输入: ")
                 lorder_cards = input().split()
 
-            print("请输入农民的牌: ")
+            print("请输入农民的牌(以空格间隔): ")
             farmer_cards = input().split()
             while not validate_cards(farmer_cards):
                 print("农民的牌输入错误，请重新输入: ")
