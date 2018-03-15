@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from six.moves import input
-from utils import format_input_cards, format_output_cards, get_rest_cards
+from utils import validate_cards, format_input_cards, format_output_cards, get_rest_cards
 from move_player import get_resp_moves
 from minmax_engine import start_engine
 
@@ -9,21 +9,26 @@ from minmax_engine import start_engine
 class UIEngine(object):
     @staticmethod
     def declare():
-        print("可输入的命令及大小王牌型如下:")
+        print("可输入的命令:")
         print("pass - 过，不出牌")
-        print("Y - 小王")
-        print("Z - 大王")
         print("-" * 30)
 
     @staticmethod
-    def run(lorder_cards=[], farmer_cards=[], farmer_move=[]):
+    def run(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
         UIEngine.declare()
 
         if not lorder_cards and not farmer_cards:
             print("请输入地主的牌: ")
             lorder_cards = input().split()
+            while not validate_cards(lorder_cards):
+                print("地主的牌输入错误，请重新输入: ")
+                lorder_cards = input().split()
+
             print("请输入农民的牌: ")
             farmer_cards = input().split()
+            while not validate_cards(farmer_cards):
+                print("农民的牌输入错误，请重新输入: ")
+                farmer_cards = input().split()
 
         lorder_cards = format_input_cards(lorder_cards)
         farmer_cards = format_input_cards(farmer_cards)

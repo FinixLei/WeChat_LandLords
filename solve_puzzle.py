@@ -5,8 +5,8 @@ def main():
     lorder_cards = ""
     farmer_cards = ""
 
-    # lorder_cards = "2 2 A K 10 7 6 6 5 5 4 3"
-    # farmer_cards = "Z 2 A K Q J 10 5 5 4 3"
+    # lorder_cards = "3 4 5 大王"
+    # farmer_cards = "3 4 5 小王"
 
     UIEngine.run(lorder_cards.split(), farmer_cards.split())
 

@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import copy
 import time
 from functools import wraps
@@ -10,8 +12,9 @@ s2v = {
     'K': 13, 'k': 13,
     'A': 14, 'a': 14,
     '2': 18, 2: 18,
-    'Y': 20, 'y': 20,
-    'Z': 30, 'z': 30
+    'Y': 20, 'y': 20, '小王': 20,
+    'Z': 30, 'z': 30, '大王': 30
+
 }
 
 v2s = {
@@ -22,13 +25,20 @@ v2s = {
     13: 'K',
     14: 'A',
     18: '2',
-    20: 'Y',
-    30: 'Z'
+    20: '小王',
+    30: '大王'
 }
 
 MIN_SINGLE_CARDS = 5
 MIN_PAIRS = 3
 MIN_TRIPLES = 2
+
+
+def validate_cards(cards):
+    for card in cards:
+        if card not in s2v.keys():
+            return False
+    return True
 
 
 def format_input_cards(cards):
