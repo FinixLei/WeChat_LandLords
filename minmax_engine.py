@@ -15,7 +15,7 @@ m_class = MoveClassifier()
 def process_search(index, result_dict,
                    lorder_cards, farmer_cards, current_move, next_player):
     score = minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player)
-    print("Move: %s; Score: %d" % (format_output_cards(current_move), score))
+    print("Move: %s; Score: %d " % (format_output_cards(current_move), score))
     result_dict[index] = {'move': current_move, 'score': score}
 
 

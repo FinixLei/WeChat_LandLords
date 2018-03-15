@@ -17,6 +17,14 @@ class UIEngine(object):
 
     @staticmethod
     def run(lorder_cards=[], farmer_cards=[], farmer_move=[]):
+        UIEngine.declare()
+
+        if not lorder_cards and not farmer_cards:
+            print("请输入地主的牌: ")
+            lorder_cards = input().split()
+            print("请输入农民的牌: ")
+            farmer_cards = input().split()
+
         lorder_cards = format_input_cards(lorder_cards)
         farmer_cards = format_input_cards(farmer_cards)
 
