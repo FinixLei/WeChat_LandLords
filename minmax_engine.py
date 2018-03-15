@@ -15,7 +15,8 @@ m_class = MoveClassifier()
 def process_search(index, result_dict,
                    lorder_cards, farmer_cards, current_move, next_player):
     score = minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_player)
-    print("Move: %s; Score: %d " % (format_output_cards(current_move), score))
+    print("Move: %s; Score: %d; calculated %s nodes "
+          % (format_output_cards(current_move), score, nodes_num))
     result_dict[index] = {'move': current_move, 'score': score}
 
 
@@ -36,6 +37,7 @@ def minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_pl
             # If any other process gets the best move, exit myself
             if nodes_num % 1e4 == 0 and _get_best_move():
                 exit(0)
+            nodes_num += 1
             return MAX_SCORE  # lorder win, return MAX_SCORE
 
     elif next_player == 'lorder':
@@ -43,6 +45,7 @@ def minmax_search(result_dict, lorder_cards, farmer_cards, current_move, next_pl
             # If any other process gets the best move, exit myself
             if nodes_num % 1e4 == 0 and _get_best_move():
                 exit(0)
+            nodes_num += 1
             return MIN_SCORE  # farmer win, return MIN_SCORE
 
     if next_player == 'farmer':  # the parameter next_player is current player
