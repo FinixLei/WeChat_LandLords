@@ -135,7 +135,7 @@ class MoveClassifier(object):
                 count_dict[v] = 1
 
         if len(move) == 6:
-            if card_types == 3 and \
+            if card_types == 2 and \
                count_dict.get(4) == 1 and \
                count_dict.get(1) == 2:
                 return {'type': TYPE_13_4_2}

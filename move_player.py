@@ -80,7 +80,7 @@ def get_resp_moves(cards, rival_move):
         moves = mf.filter_type_14_4_4(all_moves, rival_move)
 
     else:  # Unknown type
-        raise Exception("Unknown Move Type!")
+        raise Exception("Unknown Move Type! - %s" % rival_move)
 
     if move_type not in [move_classifier.TYPE_0_PASS,
                          move_classifier.TYPE_4_BOMB,
