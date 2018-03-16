@@ -106,7 +106,7 @@ def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
     print("%d Moves totally: %s" % (len(formatted_all_lorder_moves), formatted_all_lorder_moves))
 
     if len(all_lorder_moves) == 1:  # Pass
-        return []
+        return all_lorder_moves[0]
 
     count = 0
     for move in all_lorder_moves:
