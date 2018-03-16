@@ -69,6 +69,8 @@ class UIEngine(object):
             if (farmer_move in ['pass', 'Pass', 'PASS', '不要']) or \
                len(farmer_move.strip()) == 0:
                 farmer_move = []
+            elif farmer_move == 'quit':
+                exit(0)
             else:
                 farmer_move = format_input_cards(farmer_move.split())
 
