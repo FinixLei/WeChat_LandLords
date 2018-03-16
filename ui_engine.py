@@ -11,6 +11,7 @@ class UIEngine(object):
     def declare():
         print("可输入的命令:")
         print("pass - 过，不出牌")
+        print("quit - 立即退出程序")
         print("-" * 30)
 
     @staticmethod
