@@ -105,6 +105,9 @@ def start_engine(lorder_cards=list(), farmer_cards=list(), farmer_move=list()):
     formatted_all_lorder_moves = [format_output_cards(move) for move in all_lorder_moves]
     print("%d Moves totally: %s" % (len(formatted_all_lorder_moves), formatted_all_lorder_moves))
 
+    if len(all_lorder_moves) == 1:  # Pass
+        return []
+
     count = 0
     for move in all_lorder_moves:
         record = {'move': move,
