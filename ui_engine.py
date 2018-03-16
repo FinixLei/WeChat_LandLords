@@ -59,8 +59,8 @@ class UIEngine(object):
             # Print the Situation after Lorder play a move
             str_lorder_move = format_output_cards(lorder_move) if lorder_move else 'Pass!'
             print("地主家的牌: %s" % format_output_cards(lorder_cards))
-            print("地主已出牌: %s" % str_lorder_move)
             print("农民家的牌: %s" % format_output_cards(farmer_cards))
+            print("地主已出牌: %s" % str_lorder_move)
             print("-" * 20)
 
             # Farmer plays a move
