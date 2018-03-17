@@ -3,6 +3,7 @@ from utils import format_input_cards, GenAnyN, print_func_name
 from move_gener import MovesGener
 from move_player import get_resp_moves
 from move_filter import MoveFilter
+from minmax_engine import start_engine
 
 a = [3, 3, 3, 4, 4, 4, 6, 7, 8, 9, 10, 10, 'K']
 b = [6, 7, 8, 9, 10, 'J', 'J', 'Q', 'Q', 'Q', 'Y']
@@ -237,6 +238,14 @@ def test_filter_type_14_4_4():
     print("Filtered moves = %s" % filtered_moves)
 
 
+@print_func_name
+def test_minmax_engine():
+    lorder_cards = "3 3 4 4 5 5 6 8"
+    farmer_cards = "4 4 5 5 3 7"
+    best_move = start_engine(lorder_cards=lorder_cards.split(), farmer_cards=farmer_cards.split(), farmer_move=[])
+    print("Best Move is %s" % best_move)
+
+
 def main():
     # Test MoveGener
     test_MoveGener()
@@ -264,5 +273,10 @@ def main():
     test_GenAnyN()
     test_get_resp_moves()
 
+    # Test MinMax Engine
+    test_minmax_engine()
 
-main()
+
+if __name__ == '__main__':
+    # freeze_support()
+    main()

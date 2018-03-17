@@ -1,19 +1,16 @@
 欢乐斗地主之残局解答器
 
 这个项目终于完成了！
-一共实现了2个引擎：蒙特卡洛引擎（分为单进程和多进程2个版本）和传统的Min-Max引擎（多进程版）。
-实测中发现：
-1. 蒙特卡洛引擎并不准确，某些题的正确答案所得到的概率并不是最高的。这大概也是很多围棋AI的死活有问题的根本原因。
-2. Min-Max引擎非常之快，而且完全正确。当然，这是针对扑克牌变化相对较少而言（比如农民出对地主也只能出对和炸弹）。
-
-最终的solution还是使用了Min-Max引擎。
+最初实现了2个引擎（都是多进程）：蒙特卡洛引擎和传统的MinMax引擎。其实它们的代码极为类似，
+但是因为蒙特卡洛引擎并不准确，概率最高的未必是绝杀的一条路，因此弃用蒙特卡洛引擎，而专注于MinMax引擎。
+Min-Max引擎还有另外一个好处，就是非常快，因为可以剪枝；但对于牌类来说，就必须算到牌局终局。
 
 使用方法：
 
     python solve_puzzle.py
 
 --------------------------------------------------------------------------
-# Done
+# Code Introduction
 
 1. Test Framework  
    See test.py
@@ -29,10 +26,4 @@
 5. get_resp_moves(cards, rival_move)  
    Give all the possible moves per cards on hand and the rival's move
 
-6. Basic Monte Carlo search
-   Basic function is done.
-
-7. Multi-Process do MC search.
-
-8. Min-Max Engine.
-   This is the final solution!
+6. Min-Max Engine
