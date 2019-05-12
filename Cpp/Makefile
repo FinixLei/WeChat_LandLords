@@ -1,4 +1,4 @@
-GPP := g++ -g -std=c++11
+GPP := g++ -std=c++11
 # GPP := g++ -std=c++11
 # CC := gcc
 
