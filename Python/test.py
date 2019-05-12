@@ -24,7 +24,6 @@ def test_gen_type_8_serial_single():
     mg = MovesGener(format_input_cards(c))
     print(mg.gen_type_8_serial_single(repeat_num=7))
 
-
 @print_func_name
 def test_gen_type_9_serial_pair():
     mg = MovesGener(format_input_cards(c))
@@ -245,6 +244,13 @@ def test_minmax_engine():
     best_move = start_engine(lorder_cards=lorder_cards.split(), farmer_cards=farmer_cards.split(), farmer_move=[])
     print("Best Move is %s" % best_move)
 
+@print_func_name
+def test_gen_type_13_4_2():
+    mg = MovesGener(format_input_cards(c))
+    result = mg.gen_type_13_4_2()
+    print(result)
+    print("Total number = %s" % len(result))
+
 
 def main():
     # Test MoveGener
@@ -254,6 +260,7 @@ def main():
     test_gen_type_10_serial_triple()
     test_gen_type_11_serial_3_1()
     test_gen_type_12_serial_3_2()
+    test_gen_type_13_4_2()  # TODO: this fails actually. gen_type_13_4_2() and gen_type_14_4_4() should be fixed.
 
     # Test MoveFilter
     test_filter_type_6_3_1()

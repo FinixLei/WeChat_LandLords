@@ -217,6 +217,8 @@ class MovesGener(object):
         return serial_3_2_moves
 
     def gen_type_13_4_2(self):
+        # TODO: This implementation contains duplicated results,
+        #       Need to remove the duplications, refer to CPP implementation
         four_cards = list()
         for k, v in self.cards_dict.items():
             if v >= 4:
