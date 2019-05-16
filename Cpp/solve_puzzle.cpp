@@ -158,12 +158,14 @@ int main()
             for (auto move : proper_moves) {
                 if (move.size() != farmer_move.size()) continue;
                 sort(move.begin(), move.end());
+                bool all_same = true;
                 for (int i=0; i<move.size(); ++i) {
                     if (farmer_move[i] != move[i]) {
+                        all_same = false;
                         break;
                     }
                 }
-                farmer_move_exists = true;
+                if (all_same == true) farmer_move_exists = true;
             }
         }
 
