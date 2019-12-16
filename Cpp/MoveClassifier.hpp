@@ -135,6 +135,7 @@ pair<MOVE_TYPE, SERIAL_NUM> get_move_type(const vector<int>& move)
     if (size == 6) {
         if (set_size == 2) {
             if (count_dict[4] == 1 && count_dict[2] == 1) return {TYPE_13_4_2, -1};
+            else if (count_dict[3] == 2) return {TYPE_10_SERIAL_TRIPLE, -1};
             else return {TYPE_99_WRONG, -1};
         }
         else if (set_size == 3) {
