@@ -11,7 +11,8 @@
 
 extern pthread_mutex_t mutex;
 
-struct thread_parameters {
+struct thread_parameters 
+{
     vector<int> farmer_cards;
     vector<int> lorder_cards;
     vector<int> last_move;
