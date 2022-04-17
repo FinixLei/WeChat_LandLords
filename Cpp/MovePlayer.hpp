@@ -41,6 +41,8 @@ vector<vector<int>> get_proper_moves(vector<int>& cards, vector<int>& rival_move
     else if (move_type == TYPE_4_BOMB) {
         all_moves = mg.gen_type_4_bomb();
         proper_moves = filter_type_4_bomb(all_moves,rival_move);
+        vector<vector<int>> king_bomb_moves = mg.gen_type_5_king_bomb();
+        proper_moves.insert(proper_moves.end(), king_bomb_moves.begin(), king_bomb_moves.end());
     }
     else if (move_type == TYPE_5_KING_BOMB) {
         proper_moves = {};
